@@ -29,10 +29,27 @@ The **Lead.AI Fraud Detection Table Data** dataset (`lead-ai-labs/fraud-detectio
 * **Dataset Name:** Lead.AI Fraud Detection Table Data
 * **Repository:** `lead-ai-labs/fraud-detection-Table-data`
 * **Publisher:** [Lead.AI Labs](https://huggingface.co/lead-ai-labs)
+* **Official Website:** [www.lead-ai.us](https://www.lead-ai.us)
 * **License:** Creative Commons Attribution 4.0 International (CC-BY-4.0)
 * **Task Category:** Tabular Classification
 * **Format:** CSV (`train.csv`)
-* **Size:** 100+ realistic synthetic records
+* **Size:** 105 realistic synthetic records
+
+---
+
+## 💻 Python Quickstart (Hugging Face Datasets)
+
+```python
+from datasets import load_dataset
+
+# Load dataset directly via Hugging Face Hub
+dataset = load_dataset("lead-ai-labs/fraud-detection-Table-data")
+print(dataset)
+
+# Convert to Pandas DataFrame
+df = dataset['train'].to_pandas()
+print("Fraud Ratio:", df['is_fraud'].mean())
+```
 
 ---
 
@@ -67,39 +84,6 @@ This dataset provides a balanced, noise-injected tabular environment designed sp
 | `previous_chargebacks` | Integer | `0` – `5` | Count of historical chargebacks recorded |
 | `payment_method_risk` | Float | `0.10` – `0.90` | Risk factor of chosen payment instrument |
 | `is_fraud` | Integer | `0` or `1` | **Target Label** (0 = Legitimate, 1 = Fraudulent) |
-
----
-
-## 🎯 Target Label
-
-* `0`: **Legitimate Transaction** (Normal user activity, verified pattern).
-* `1`: **Fraudulent Transaction** (High-risk anomaly, flagged for chargeback or fraud prevention).
-
----
-
-## 📝 Example Rows
-
-```csv
-transaction_id,amount,transaction_hour,merchant_risk_score,customer_age_days,device_trust_score,location_risk_score,velocity_24h,previous_chargebacks,payment_method_risk,is_fraud
-TXN-1001,45.20,14,0.15,450,0.92,0.10,2,0,0.15,0
-TXN-1002,1250.00,3,0.85,12,0.15,0.88,14,2,0.80,1
-TXN-1003,89.99,18,0.20,120,0.88,0.15,1,0,0.20,0
-```
-
----
-
-## Intended Use
-
-* Training tabular classification algorithms (XGBoost, LightGBM, Random Forest, Logistic Regression).
-* Evaluating Explainable AI (XAI) feature attribution accuracy.
-* Prototyping risk-scoring web interfaces and API endpoints.
-
----
-
-## Not Intended Use
-
-* Direct production deployment for real-money financial decision-making without real-world model fine-tuning.
-* Use as a representative sample of any specific bank's proprietary customer transaction history.
 
 ---
 

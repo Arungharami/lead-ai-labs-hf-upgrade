@@ -1,5 +1,10 @@
 # Lead.AI Labs Hugging Face Upgrade Control Center
 
+[![Lead.AI Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
+[![Hugging Face Org](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-lead--ai--labs--hf--upgrade-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+
 This repository manages the professional Hugging Face upgrade for Lead.AI Labs, including organization card content, model cards, dataset cards, Space demo files, collections, upload commands, website link mapping, and launch materials.
 
 ---
@@ -63,10 +68,10 @@ lead-ai-labs-hf-upgrade/
 ├── datasets/
 │   ├── fraud-detection-Table-data/
 │   │   ├── README.md                   # Dataset Card with HF Viewer YAML
-│   │   └── train.csv                   # 100+ row synthetic tabular fraud dataset
+│   │   └── train.csv                   # 105-row synthetic tabular fraud dataset
 │   └── fraud-detection-sample-data/
 │       ├── README.md                   # Sample Dataset Card with HF Viewer YAML
-│       └── sample_data.csv             # 20+ row sample dataset
+│       └── sample_data.csv             # 25-row sample dataset
 ├── spaces/
 │   └── lead-ai-fraud-shield-demo/
 │       ├── README.md                   # HF Space Card
@@ -82,17 +87,6 @@ lead-ai-labs-hf-upgrade/
 │   └── CLIENT_PITCH.md                 # Client Outreach & Service Packages
 └── .gitignore                          # Git Exclusions
 ```
-
----
-
-## 🔄 Step-by-Step Update Workflow
-
-1. **Brand & Funnel Alignment:** Review `BRAND_GUIDE.md` and `PLATFORM_STRATEGY.md` for consistent messaging.
-2. **Organization Card Sync:** Paste `org-card/README.md` into the Lead.AI Labs organization settings on Hugging Face.
-3. **Model & Dataset Card Updates:** Deploy `models/fraud-detection-xai/README.md` and dataset files via Hugging Face CLI.
-4. **Space Deployment:** Push `app.py`, `requirements.txt`, and Space `README.md` to `spaces/lead-ai-labs/lead-ai-fraud-shield-demo`.
-5. **Collection Assembly:** Execute `collections/collection-plan.md` to organize HF assets into public curated groups.
-6. **Web Funnel Verification:** Verify reverse-linking across `www.lead-ai.us`, GitHub, and Hugging Face using `website-link-map/lead-ai-platform-links.md`.
 
 ---
 
