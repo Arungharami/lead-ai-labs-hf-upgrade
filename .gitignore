@@ -27,11 +27,13 @@ ENV/
 # Jupyter Notebooks & Checkpoints
 .ipynb_checkpoints
 
-# Environment & Credentials
+# Environment & Credentials (CRITICAL SAFETY)
 .env
 .env.*
 *.pem
 *.key
+kaggle.json
+.kaggle/
 
 # IDE & Editors
 .vscode/
@@ -40,6 +42,6 @@ ENV/
 *.swo
 .DS_Store
 
-# Gradio / Hugging Face cache
+# Gradio / Hugging Face / Kaggle cache
 flagged/
 .cache/
