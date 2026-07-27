@@ -1,0 +1,19 @@
+{
+  "title": "Lead.AI Fraud Detection Sample Data",
+  "id": "arungharami/lead-ai-fraud-detection-sample-data",
+  "licenses": [
+    {
+      "name": "MIT"
+    }
+  ],
+  "subtitle": "Small synthetic sample dataset for testing Lead.AI Fraud Shield demos, tutorials, and API examples.",
+  "keywords": [
+    "fraud detection",
+    "sample data",
+    "explainable AI",
+    "XAI",
+    "risk scoring",
+    "synthetic data",
+    "Lead.AI"
+  ]
+}

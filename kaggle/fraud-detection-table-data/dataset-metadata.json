@@ -1,0 +1,21 @@
+{
+  "title": "Lead.AI Fraud Detection Table Data",
+  "id": "arungharami/lead-ai-fraud-detection-table-data",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0"
+    }
+  ],
+  "subtitle": "Synthetic transaction-style fraud detection dataset for explainable AI, risk scoring, and Lead.AI Fraud Shield prototyping.",
+  "keywords": [
+    "fraud detection",
+    "explainable AI",
+    "XAI",
+    "risk scoring",
+    "synthetic data",
+    "fintech",
+    "machine learning",
+    "tabular classification",
+    "Lead.AI"
+  ]
+}
