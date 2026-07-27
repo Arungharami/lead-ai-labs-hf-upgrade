@@ -10,7 +10,7 @@ Modern companies cannot afford to rely on opaque, "black-box" artificial intelli
 
 **Lead.AI Labs** delivers **Explainable AI (XAI)** solutions tailored to your unique data infrastructure:
 * **Transparency:** Every risk score comes with clear, audit-ready feature attribution.
-* **Accuracy:** Calibrated machine learning models trained on domain-specific indicators.
+* **Open Science Proof:** Model cards, datasets, and benchmark kernels published transparently on [Hugging Face](https://huggingface.co/lead-ai-labs) and [Kaggle](https://www.kaggle.com/arungharami).
 * **Rapid Deployment:** Microservices and API integrations built to deploy in days, not months.
 * **Human-in-the-Loop:** Designed to assist risk teams and reduce manual review queues by up to 70%.
 
@@ -26,7 +26,7 @@ Modern companies cannot afford to rely on opaque, "black-box" artificial intelli
 ```
 
 ### 1. Free Demo & Evaluation — $0.00
-* Access to public Hugging Face model cards, synthetic datasets, and interactive Gradio Space demo.
+* Access to public Hugging Face model cards, synthetic datasets, Kaggle notebooks, and interactive Gradio Space demo.
 * Self-guided testing of Explainable AI risk-scoring capabilities.
 * Ideal for: Exploratory research, prototyping, and initial concept validation.
 
@@ -64,4 +64,5 @@ Ready to transform your risk engineering and business automation with Explainabl
 
 * 🌐 **Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
 * 📧 **Direct Contact:** [https://www.lead-ai.us](https://www.lead-ai.us)
-* 📂 **Portfolio:** [https://huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* 📂 **Hugging Face Portfolio:** [https://huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* 📊 **Kaggle Profile:** [https://www.kaggle.com/arungharami](https://www.kaggle.com/arungharami)
