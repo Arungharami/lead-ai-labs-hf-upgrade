@@ -1,27 +1,46 @@
 # Lead.AI Labs — Hugging Face Safe Deployment & Upload Commands
 
-This guide provides tested, credential-free command-line scripts to upload and synchronize all upgraded model cards, dataset cards, synthetic CSV files, and Space demo source files to [Hugging Face](https://huggingface.co/lead-ai-labs).
+This guide provides safe, tested, credential-free command-line scripts to create, upload, and synchronize all upgraded model cards, dataset cards, synthetic CSV files, and Space demo source files to [Hugging Face](https://huggingface.co/lead-ai-labs).
 
 > ⚠️ **SECURITY MANDATE:** Never hard-code private tokens in scripts or check them into Git. Always export your Hugging Face write token as an environment variable (`HF_TOKEN`).
 
 ---
 
-## 🔑 1. Environment Setup & Authentication
+## 🔑 1. Terminal Setup & Authentication
+
+Run these commands in your local Mac shell:
 
 ```bash
-# Export your Hugging Face Write Token (Do NOT commit real tokens!)
+# 1. Navigate to your local control center repository
+cd /Users/arun/Documents/Lead-ai-labs-hf-upgrade/lead-ai-labs-hf-upgrade
+
+# 2. Export your Hugging Face Write Token (Replace placeholder in shell, never commit!)
 export HF_TOKEN="your_huggingface_write_token_here"
 
-# Install or verify huggingface_hub CLI
+# 3. Verify huggingface_hub installation & authenticate
 pip install --upgrade huggingface_hub
-
-# Authenticate CLI
 huggingface-cli login --token $HF_TOKEN
 ```
 
 ---
 
-## 🤖 2. Model Card Upload (`lead-ai-labs/fraud-detection-xai`)
+## 🏗️ 2. Repository Initialization (If repositories do not exist on HF yet)
+
+```bash
+# Create Model Repository
+huggingface-cli repo create fraud-detection-xai --type model --organization lead-ai-labs || true
+
+# Create Dataset Repositories
+huggingface-cli repo create fraud-detection-Table-data --type dataset --organization lead-ai-labs || true
+huggingface-cli repo create fraud-detection-sample-data --type dataset --organization lead-ai-labs || true
+
+# Create Gradio Space Repository
+huggingface-cli repo create lead-ai-fraud-shield-demo --type space --space-sdk gradio --organization lead-ai-labs || true
+```
+
+---
+
+## 🤖 3. Model Card Upload (`lead-ai-labs/fraud-detection-xai`)
 
 ```bash
 # Upload Model Card README
@@ -32,7 +51,7 @@ huggingface-cli upload lead-ai-labs/fraud-detection-xai \
 
 ---
 
-## 📊 3. Dataset Uploads
+## 📊 4. Dataset & CSV Uploads
 
 ### A. Training Table Dataset (`lead-ai-labs/fraud-detection-Table-data`)
 
@@ -42,7 +61,7 @@ huggingface-cli upload lead-ai-labs/fraud-detection-Table-data \
   ./datasets/fraud-detection-Table-data/README.md README.md \
   --repo-type dataset
 
-# Upload Synthetic CSV File
+# Upload Synthetic CSV File (105 rows)
 huggingface-cli upload lead-ai-labs/fraud-detection-Table-data \
   ./datasets/fraud-detection-Table-data/train.csv train.csv \
   --repo-type dataset
@@ -56,7 +75,7 @@ huggingface-cli upload lead-ai-labs/fraud-detection-sample-data \
   ./datasets/fraud-detection-sample-data/README.md README.md \
   --repo-type dataset
 
-# Upload Synthetic Sample CSV File
+# Upload Synthetic Sample CSV File (25 rows)
 huggingface-cli upload lead-ai-labs/fraud-detection-sample-data \
   ./datasets/fraud-detection-sample-data/sample_data.csv sample_data.csv \
   --repo-type dataset
@@ -64,42 +83,30 @@ huggingface-cli upload lead-ai-labs/fraud-detection-sample-data \
 
 ---
 
-## 🖥️ 4. Space Demo Deployment (`lead-ai-labs/lead-ai-fraud-shield-demo`)
+## 🖥️ 5. Space Demo Source Deployment (`lead-ai-labs/lead-ai-fraud-shield-demo`)
 
 ```bash
-# Option A: Upload files directly via Hugging Face CLI
+# Upload Space Metadata Card
 huggingface-cli upload lead-ai-labs/lead-ai-fraud-shield-demo \
   ./spaces/lead-ai-fraud-shield-demo/README.md README.md \
   --repo-type space
 
+# Upload Gradio Interactive Application
 huggingface-cli upload lead-ai-labs/lead-ai-fraud-shield-demo \
   ./spaces/lead-ai-fraud-shield-demo/app.py app.py \
   --repo-type space
 
+# Upload Python Dependencies
 huggingface-cli upload lead-ai-labs/lead-ai-fraud-shield-demo \
   ./spaces/lead-ai-fraud-shield-demo/requirements.txt requirements.txt \
   --repo-type space
-
-# Option B: Clone Space Git Repo and sync directly
-# git clone https://huggingface.co/spaces/lead-ai-labs/lead-ai-fraud-shield-demo /tmp/space-repo
-# cp ./spaces/lead-ai-fraud-shield-demo/* /tmp/space-repo/
-# cd /tmp/space-repo && git add . && git commit -m "Deploy Lead.AI Fraud Shield Demo" && git push
 ```
 
 ---
 
-## 💻 5. Local GitHub Repository Commit & Push
+## 💻 6. GitHub Remote Sync
 
 ```bash
-# Navigate to repo root
-cd /Users/arun/Documents/Lead-ai-labs-hf-upgrade/lead-ai-labs-hf-upgrade
-
-# Stage all newly generated assets
-git add .
-
-# Commit changes
-git commit -m "Build professional Lead.AI Labs Hugging Face upgrade"
-
-# Push to GitHub main branch
+# Push committed local control center changes to remote GitHub repo
 git push origin main
 ```
