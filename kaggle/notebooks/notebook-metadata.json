@@ -1,0 +1,18 @@
+{
+  "id": "arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo",
+  "title": "Lead.AI Fraud Shield — Explainable Fraud Detection Demo",
+  "code_file": "lead_ai_fraud_shield_kaggle_demo.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "false",
+  "enable_gpu": "false",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "arungharami/lead-ai-fraud-detection-table-data",
+    "arungharami/lead-ai-fraud-detection-sample-data"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": []
+}
