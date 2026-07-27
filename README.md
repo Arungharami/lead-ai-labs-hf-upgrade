@@ -1,15 +1,16 @@
-# Lead.AI Labs Hugging Face Upgrade Control Center
+# Lead.AI Labs Hugging Face & Kaggle Upgrade Control Center
 
 [![Lead.AI Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
 [![Hugging Face Org](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
+[![Kaggle Profile](https://img.shields.io/badge/Kaggle-arungharami-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/arungharami)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-lead--ai--labs--hf--upgrade-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-This repository manages the professional Hugging Face upgrade for Lead.AI Labs, including organization card content, model cards, dataset cards, Space demo files, collections, upload commands, website link mapping, and launch materials.
+This repository manages the professional Hugging Face and Kaggle upgrades for Lead.AI Labs, including organization card content, model cards, dataset cards, Space demo files, Kaggle CLI dataset/notebook bridge packages, upload commands, website link mapping, and launch materials.
 
 ---
 
-## 🏢 Business Identity & Links
+## 🏢 Business Identity & Multi-Platform Links
 
 * **Company Name:** Lead.AI Labs
 * **Tagline:** Trustworthy AI, fraud detection, predictive analytics, and automation systems for real business workflows.
@@ -17,37 +18,41 @@ This repository manages the professional Hugging Face upgrade for Lead.AI Labs, 
 * **Main Business Identity:** Explainable AI Systems for Business Automation
 * **Official Website:** [www.lead-ai.us](https://www.lead-ai.us)
 * **Hugging Face Organization:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* **Kaggle Profile:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami)
 * **GitHub Repository:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
 
 ---
 
 ## 🎯 What This Repo Controls
 
-This repository serves as the centralized **Upgrade Control Center** to maintain, package, and sync all public AI portfolio assets for Lead.AI Labs on Hugging Face:
+This repository serves as the centralized **Upgrade Control Center** to maintain, package, and sync all public AI portfolio assets for Lead.AI Labs across Hugging Face and Kaggle:
 
 1. **Organization Profile Card (`org-card/`):** Complete README markup for the Lead.AI Labs organization page.
 2. **Explainable AI Model Cards (`models/`):** Detailed card, schema, and XAI documentation for `lead-ai-labs/fraud-detection-xai`.
-3. **Structured Datasets & Viewer Config (`datasets/`):** Clean tabular synthetic datasets and Hugging Face Dataset Viewer metadata (`fraud-detection-Table-data` & `fraud-detection-sample-data`).
+3. **Structured Hugging Face Datasets (`datasets/`):** Clean tabular synthetic datasets and Hugging Face Dataset Viewer metadata (`fraud-detection-Table-data` & `fraud-detection-sample-data`).
 4. **Interactive Hugging Face Space (`spaces/`):** Source code (`app.py`, `requirements.txt`, `README.md`) for the Gradio-powered `lead-ai-fraud-shield-demo`.
-5. **Collection Architecture (`collections/`):** Blueprint for structuring 4 specialized Hugging Face collections.
-6. **Website & Funnel Mapping (`website-link-map/`):** Navigation and cross-referencing strategy between `www.lead-ai.us`, GitHub, and Hugging Face.
-7. **Automated Deployment Scripts (`upload_commands.md`):** Safe, credential-free Hugging Face CLI & Git sync commands.
-8. **Product Launch Suite (`launch/`):** Launch checklist, LinkedIn announcement, and client pitch deck with service tier pricing.
+5. **Kaggle Data Science CLI Bridge (`kaggle/`):** Dataset metadata, Kaggle dataset packages, and executable Jupyter Notebook (`lead_ai_fraud_shield_kaggle_demo.ipynb`).
+6. **Collection Architecture (`collections/`):** Blueprint for structuring 4 specialized Hugging Face collections.
+7. **Website & Funnel Mapping (`website-link-map/`):** Navigation and cross-referencing strategy between `www.lead-ai.us`, GitHub, Hugging Face, and Kaggle.
+8. **Automated Deployment Scripts (`upload_commands.md` & `kaggle/kaggle_upload_commands.md`):** Safe, credential-free CLI commands for Hugging Face and Kaggle.
+9. **Product Launch Suite (`launch/`):** Launch checklist, LinkedIn announcement, and client pitch deck with service tier pricing.
 
 ---
 
-## 📊 Current Assets & Upgrade Goal
+## 📊 Kaggle & Hugging Face Platform Ecosystem Role
 
-### Current Portfolio Assets
-* Hugging Face Org: `lead-ai-labs`
-* Model Repository: `lead-ai-labs/fraud-detection-xai`
-* Datasets Repositories:
-  * `lead-ai-labs/fraud-detection-Table-data`
-  * `lead-ai-labs/fraud-detection-sample-data`
-* Space Demo Repository: `lead-ai-labs/lead-ai-fraud-shield-demo`
-
-### Upgrade Goal
-Establish a unified, high-credibility commercial AI showcase where technical research, datasets, explainable models, and live interactive demos directly drive client discovery and business consultation conversions for Lead.AI Labs.
+```text
+[ www.lead-ai.us ] ◄── Enterprise Client Conversion & Service Packages
+       ▲
+       │
+[ GitHub Control Center ] ◄── Open Source Engineering Proof
+       ▲
+       │
+[ Hugging Face Hub ] ◄── Open Models, Datasets & Live Gradio Demos
+       ▲
+       │
+[ Kaggle Data Science Bridge ] ◄── Benchmark Kernels & Notebook EDA Showcase
+```
 
 ---
 
@@ -58,10 +63,10 @@ lead-ai-labs-hf-upgrade/
 ├── README.md                           # Main Control Dashboard (This file)
 ├── BRAND_GUIDE.md                      # Official Brand Identity & Tone Guidelines
 ├── PLATFORM_STRATEGY.md                # Multi-channel Business Funnel Strategy
-├── FINAL_SUMMARY.md                    # Upgrade Audit & Remaining Action Items
+├── FINAL_SUMMARY.md                    # Upgrade Audit & Executive Summary
 ├── upload_commands.md                  # Safe Hugging Face CLI Sync Scripts
 ├── org-card/
-│   └── README.md                       # Copy-paste content for HF Org Card
+│   └── README.md                       # Content for HF Org Profile
 ├── models/
 │   └── fraud-detection-xai/
 │       └── README.md                   # Model Card for lead-ai-labs/fraud-detection-xai
@@ -77,6 +82,20 @@ lead-ai-labs-hf-upgrade/
 │       ├── README.md                   # HF Space Card
 │       ├── app.py                      # Interactive Gradio XAI Demo App
 │       └── requirements.txt            # Python Dependencies
+├── kaggle/                             # NEW Kaggle CLI Bridge
+│   ├── README.md                       # Kaggle Architecture Overview
+│   ├── kaggle_upload_commands.md       # Kaggle CLI Publishing Scripts
+│   ├── fraud-detection-table-data/     # Kaggle Dataset Package 1
+│   │   ├── dataset-metadata.json
+│   │   ├── README.md
+│   │   └── train.csv
+│   ├── fraud-detection-sample-data/    # Kaggle Dataset Package 2
+│   │   ├── dataset-metadata.json
+│   │   ├── README.md
+│   │   └── sample_data.csv
+│   └── notebooks/                      # Kaggle Kernel Package
+│       ├── dataset-metadata.json / notebook-metadata.json
+│       └── lead_ai_fraud_shield_kaggle_demo.ipynb
 ├── collections/
 │   └── collection-plan.md              # 4 Curated Portfolio Collections
 ├── website-link-map/
@@ -85,36 +104,29 @@ lead-ai-labs-hf-upgrade/
 │   ├── LAUNCH_CHECKLIST.md             # Pre-launch Quality Assurance Steps
 │   ├── LINKEDIN_POST.md                # Founder Announcement Copy
 │   └── CLIENT_PITCH.md                 # Client Outreach & Service Packages
-└── .gitignore                          # Git Exclusions
+└── .gitignore                          # Git & Credential Exclusions (kaggle.json blocked)
 ```
 
 ---
 
-## 🚀 Upload Workflow Quick Reference
+## 🚀 Quick Publishing Workflows
 
+### 1. Hugging Face Deployment
 ```bash
-# 1. Authenticate with Hugging Face (Never hardcode secrets!)
 export HF_TOKEN="your_huggingface_write_token_here"
 huggingface-cli login --token $HF_TOKEN
+# Refer to upload_commands.md for full repo sync scripts
+```
 
-# 2. Refer to upload_commands.md for complete per-repository CLI commands
+### 2. Kaggle Deployment
+```bash
+# Setup ~/.kaggle/kaggle.json with chmod 600
+kaggle datasets create -p kaggle/fraud-detection-table-data
+kaggle datasets create -p kaggle/fraud-detection-sample-data
+kaggle kernels push -p kaggle/notebooks
+# Refer to kaggle/kaggle_upload_commands.md for detailed versioning commands
 ```
 
 ---
 
-## 🌐 Final Business Funnel
-
-```text
-[ Lead.AI Website ] (www.lead-ai.us)
-       │  ▲
-       ▼  │ (Book Consultation / Client Conversion)
-[ GitHub Engineering ] ──► [ Hugging Face Portfolio ] ──► [ Interactive Space Demo ]
-(Code & System Docs)        (Models, Datasets, Cards)    (Real-time XAI Risk Scoring)
-```
-
-* **Primary Funnel:** Website → GitHub → Hugging Face → Space Demo → Contact / Lead Generation
-* **Reverse Loop:** Hugging Face Search / HF Space → GitHub Docs → Website Consultation Booking
-
----
-
-> **Safety Notice:** All datasets contained in this repository are 100% synthetic transaction data generated strictly for demonstration, evaluation, and research purposes. No real financial credentials or PII are stored or processed.
+> **Safety Notice:** All datasets contained in this repository are 100% synthetic transaction data generated strictly for demonstration, evaluation, and research purposes. No real financial credentials, private card data, or PII are stored or processed.
