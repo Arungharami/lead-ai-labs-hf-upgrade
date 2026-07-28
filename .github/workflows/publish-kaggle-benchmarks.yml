@@ -1,0 +1,118 @@
+name: Publish Kaggle Benchmark Suite
+
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: Comma-separated Kaggle model slugs
+        required: true
+        default: gemini-2.5-pro,claude-sonnet-4
+      run_models:
+        description: Run the published tasks against the selected models
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kaggle-benchmark-production
+  cancel-in-progress: false
+
+jobs:
+  publish-and-run:
+    runs-on: ubuntu-latest
+    environment: kaggle-production
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      BENCHMARK_SLUG: arungharami/lead-ai-fraud-risk-reasoning-benchmark
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install official Kaggle CLI
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "kaggle==2.2.0"
+          kaggle --version
+
+      - name: Validate authentication configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${KAGGLE_API_TOKEN:-}" || {
+            echo "KAGGLE_API_TOKEN is missing from the kaggle-production environment."
+            exit 1
+          }
+
+      - name: Run repository tests
+        run: |
+          python -m pip install -e ".[dev]"
+          pytest tests/test_kaggle_benchmark_tasks.py -q
+
+      - name: Push benchmark tasks
+        shell: bash
+        run: |
+          set -euo pipefail
+          kaggle b t push lead-ai-fraud-policy-reasoning \
+            -f kaggle/benchmarks/fraud_risk_reasoning.py \
+            --wait 900 --poll-interval 15 --verbose
+          kaggle b t push lead-ai-fraud-adversarial-safety \
+            -f kaggle/benchmarks/fraud_adversarial_safety.py \
+            --wait 900 --poll-interval 15 --verbose
+          kaggle b t push lead-ai-fraud-uncertainty-escalation \
+            -f kaggle/benchmarks/fraud_uncertainty_escalation.py \
+            --wait 900 --poll-interval 15 --verbose
+
+      - name: Publish tasks and backing notebooks
+        shell: bash
+        run: |
+          set -euo pipefail
+          for task in \
+            lead-ai-fraud-policy-reasoning \
+            lead-ai-fraud-adversarial-safety \
+            lead-ai-fraud-uncertainty-escalation
+          do
+            kaggle b t publish "$task"
+            kaggle b t status "$task"
+          done
+
+      - name: Run tasks against selected models
+        if: ${{ inputs.run_models }}
+        shell: bash
+        env:
+          MODELS_INPUT: ${{ inputs.models }}
+        run: |
+          set -euo pipefail
+          IFS=',' read -ra MODELS <<< "$MODELS_INPUT"
+          MODEL_ARGS=()
+          for model in "${MODELS[@]}"; do
+            model="$(echo "$model" | xargs)"
+            test -n "$model" && MODEL_ARGS+=("-m" "$model")
+          done
+          test "${#MODEL_ARGS[@]}" -gt 0 || {
+            echo "No valid model slugs were supplied."
+            exit 1
+          }
+          for task in \
+            lead-ai-fraud-policy-reasoning \
+            lead-ai-fraud-adversarial-safety \
+            lead-ai-fraud-uncertainty-escalation
+          do
+            kaggle b t run "$task" "${MODEL_ARGS[@]}" \
+              --wait 3600 --poll-interval 20 --verbose
+            kaggle b t status "$task"
+          done
+
+      - name: Show benchmark leaderboard
+        shell: bash
+        run: |
+          set -euo pipefail
+          kaggle b leaderboard "$BENCHMARK_SLUG" --show --format json || {
+            echo "Tasks are published and run, but must still be attached in the Kaggle benchmark editor."
+          }
