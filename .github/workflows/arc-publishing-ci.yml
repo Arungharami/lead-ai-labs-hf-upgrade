@@ -77,8 +77,11 @@ jobs:
       - name: Compile Space app
         run: python -m py_compile publish/huggingface/space/app.py
 
-      - name: Lint Space app
-        run: python -m ruff check publish/huggingface/space/app.py
+      - name: Check Space app correctness
+        run: >-
+          python -m ruff check
+          --select F,I,UP,B
+          publish/huggingface/space/app.py
 
       - name: Validate workflow YAML
         working-directory: .
