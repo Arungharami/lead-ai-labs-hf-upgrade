@@ -75,20 +75,32 @@ Lead.AI Labs is committed to ethical AI development. Our risk-scoring models are
 
 ---
 
+## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
+
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center & source code
+* 🤖 **Hugging Face Hub:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs) — Open-weight XAI models, datasets & Gradio web demos
+* 📊 **Kaggle Data Science Hub:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami) — Benchmark kernels, Kaggle datasets & notebook showcase
+
+---
+
 ## 🤝 Work With Lead.AI Labs
 
 Looking to integrate explainable fraud detection, custom predictive models, or automated AI workflows into your company?
 
 * 🌐 **Visit Official Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
 * 💻 **View GitHub Engineering Repo:** [https://github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
-* 📂 **Explore Hugging Face Portfolio:** [https://huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* 🤖 **Explore Hugging Face Portfolio:** [https://huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* 📊 **Explore Kaggle Data Science Hub:** [https://www.kaggle.com/arungharami](https://www.kaggle.com/arungharami)
 
 ---
 
 ## 🔗 Official Links & Contact
 
-* **Website:** [www.lead-ai.us](https://www.lead-ai.us)
-* **Founder:** Arun Kumar Gharami
-* **Hugging Face Org:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us)
+* **Founder & Lead AI Engineer:** Arun Kumar Gharami
+* **Hugging Face Organization:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* **Kaggle Profile:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami)
+* **Kaggle Demo Notebook:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo)
 * **GitHub Control Center:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
-* **Book Consultation:** [https://www.lead-ai.us](https://www.lead-ai.us)
+* **Book Enterprise Consultation:** [https://www.lead-ai.us](https://www.lead-ai.us)

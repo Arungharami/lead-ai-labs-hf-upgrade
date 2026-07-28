@@ -1,9 +1,9 @@
 # Lead.AI Labs Hugging Face & Kaggle Upgrade Control Center
 
-[![Lead.AI Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
-[![Hugging Face Org](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
+[![Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
+[![GitHub](https://img.shields.io/badge/GitHub-lead--ai--labs--hf--upgrade-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
 [![Kaggle Profile](https://img.shields.io/badge/Kaggle-arungharami-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/arungharami)
-[![GitHub Repo](https://img.shields.io/badge/GitHub-lead--ai--labs--hf--upgrade-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
 This repository manages the professional Hugging Face and Kaggle upgrades for Lead.AI Labs, including organization card content, model cards, dataset cards, Space demo files, Kaggle CLI dataset/notebook bridge packages, upload commands, website link mapping, and launch materials.
@@ -17,9 +17,9 @@ This repository manages the professional Hugging Face and Kaggle upgrades for Le
 * **Founder:** Arun Kumar Gharami (AI Engineer & Applied Researcher)
 * **Main Business Identity:** Explainable AI Systems for Business Automation
 * **Official Website:** [www.lead-ai.us](https://www.lead-ai.us)
+* **GitHub Repository:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
 * **Hugging Face Organization:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
 * **Kaggle Profile:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami)
-* **GitHub Repository:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
 
 ---
 
@@ -39,20 +39,25 @@ This repository serves as the centralized **Upgrade Control Center** to maintain
 
 ---
 
-## 📊 Kaggle & Hugging Face Platform Ecosystem Role
+## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
 
 ```text
-[ www.lead-ai.us ] ◄── Enterprise Client Conversion & Service Packages
-       ▲
-       │
-[ GitHub Control Center ] ◄── Open Source Engineering Proof
-       ▲
-       │
-[ Hugging Face Hub ] ◄── Open Models, Datasets & Live Gradio Demos
-       ▲
-       │
-[ Kaggle Data Science Bridge ] ◄── Benchmark Kernels & Notebook EDA Showcase
+                        [ www.lead-ai.us ]
+        (Official Business Website & Enterprise Conversion Hub)
+                                ▲
+            ┌───────────────────┼───────────────────┐
+            │                   │                   │
+            ▼                   ▼                   ▼
+ [ GitHub Control Center ] ◄► [ Hugging Face ] ◄► [ Kaggle Data Science ]
+  Engineering Proof & Code    Models, Datasets &   Benchmark Kernels & 
+  (Arungharami/lead-ai-       Interactive Space    Interactive EDA Notebooks
+     labs-hf-upgrade)         Demos (lead-ai-labs)    (arungharami)
 ```
+
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center, source code & CLI sync scripts
+* 🤖 **Hugging Face Hub:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs) — Open-weight XAI models, tabular datasets & live Gradio web demos
+* 📊 **Kaggle Data Science Hub:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami) — Benchmark kernels, Kaggle datasets & interactive exploratory notebook analysis
 
 ---
 
