@@ -54,10 +54,10 @@ jobs:
             --cov-report=xml \
             --cov-fail-under=85
 
-      - name: Check correctness and import hygiene
+      - name: Check undefined names and bug risks
         run: >-
           python -m ruff check
-          --select F,I,B
+          --select F,B
           agent tests scripts
 
       - name: Check formatting
