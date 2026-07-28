@@ -1,0 +1,25 @@
+column,type,description
+customer_id,object,Synthetic unique record identifier.
+industry,object,Primary industry category.
+company_size,object,Business size band.
+acquisition_channel,object,Dominant lead acquisition channel.
+pipeline_stage,object,Current lifecycle or sales pipeline stage.
+monthly_revenue_usd,float64,Estimated monthly business revenue in U.S. dollars.
+marketing_spend_30d_usd,float64,Estimated marketing spend during the last 30 days.
+website_sessions_30d,int64,Website sessions during the last 30 days.
+leads_30d,int64,Marketing or sales leads generated during the last 30 days.
+won_customers_30d,int64,Leads converted into customers during the last 30 days.
+conversion_rate_30d,float64,Won customers divided by leads.
+avg_response_time_hours,float64,Average time to respond to a lead or customer inquiry.
+crm_adoption_score,float64,Composite 0–100 CRM process maturity score.
+automation_readiness_score,float64,Composite 0–100 readiness for workflow automation.
+engagement_score,float64,Composite 0–100 behavioral engagement score.
+support_tickets_30d,int64,Customer support tickets recorded during the last 30 days.
+nps_score,int64,Synthetic Net Promoter Score ranging from -100 to 100.
+churn_risk_score,float64,Model-ready 0–100 risk indicator for customer churn.
+lead_quality_score,float64,Model-ready 0–100 indicator of lead quality.
+estimated_pipeline_value_usd,float64,Estimated value of opportunities represented by the lead pipeline.
+recommended_segment,object,Rule-generated business segment used for demonstration.
+next_best_action,object,Rule-generated recommended operational follow-up.
+data_origin,object,Declares that every row is synthetic.
+generated_at,object,Fixed reproducibility date for this dataset release.

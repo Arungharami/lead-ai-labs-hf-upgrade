@@ -1,0 +1,17 @@
+{
+  "id": "arungharami/lead-ai-customer-intelligence-business-analytics",
+  "title": "Lead.AI Customer Intelligence — Business Analytics & Lead Scoring",
+  "code_file": "lead_ai_customer_intelligence_lab.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "false",
+  "enable_gpu": "false",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "arungharami/lead-ai-customer-intelligence-dataset"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": []
+}

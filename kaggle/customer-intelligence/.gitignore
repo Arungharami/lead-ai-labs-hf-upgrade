@@ -1,0 +1,7 @@
+dataset/lead_ai_customer_intelligence.csv
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.venv/
+.env
+kaggle.json
