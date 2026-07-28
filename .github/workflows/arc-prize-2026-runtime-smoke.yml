@@ -1,0 +1,81 @@
+name: ARC Prize 2026 Runtime Smoke
+
+on:
+  pull_request:
+    paths:
+      - "competitions/arc-prize-2026/agent/**"
+      - "competitions/arc-prize-2026/config/**"
+      - "competitions/arc-prize-2026/notebooks/**"
+      - "competitions/arc-prize-2026/scripts/**"
+      - "competitions/arc-prize-2026/Makefile"
+      - ".github/workflows/arc-prize-2026-runtime-smoke.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "23 13 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: arc-prize-runtime-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  official-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: competitions/arc-prize-2026
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Bootstrap pinned official starter
+        run: make bootstrap
+
+      - name: Install pinned ARC runtime
+        run: make setup
+
+      - name: Build Kaggle notebook
+        run: make notebook
+
+      - name: Validate generated notebook contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path(".runtime/ARC-AGI-3-Kaggle-Starter")
+          notebook = json.loads((root / "notebooks/submission.ipynb").read_text())
+          metadata = json.loads((root / "notebooks/kernel-metadata.json").read_text())
+          joined = "\n".join(
+              str(cell.get("source", "")) for cell in notebook["cells"]
+          )
+
+          assert notebook["nbformat"] == 4
+          assert "class MyAgent" in joined
+          assert "submission.parquet" in joined
+          assert metadata["enable_internet"] is False
+          assert metadata["competition_sources"] == [
+              "arc-prize-2026-arc-agi-3"
+          ]
+          assert metadata["enable_gpu"] is False
+          print("Generated notebook contract passed.")
+          PY
+
+      - name: Run final synchronized preflight
+        run: python scripts/preflight.py
+
+      - name: Upload generated notebook
+        uses: actions/upload-artifact@v4
+        with:
+          name: arc-prize-kaggle-notebook
+          path: competitions/arc-prize-2026/.runtime/ARC-AGI-3-Kaggle-Starter/notebooks/submission.ipynb
+          if-no-files-found: error
