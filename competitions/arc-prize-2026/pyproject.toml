@@ -1,27 +1,50 @@
 [build-system]
-requires = ["setuptools>=70"]
+requires = ["setuptools>=75,<76"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "lead-ai-arc-prize-2026"
-version = "0.1.0"
-description = "Lead.AI Labs research agent for ARC Prize 2026 ARC-AGI-3"
+version = "0.2.0"
+description = "Reproducible Lead.AI symbolic agent for ARC Prize 2026 ARC-AGI-3"
 requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
 dev = [
-  "pytest>=8.2,<9",
-  "ruff>=0.5,<1",
+  "pytest==8.4.1",
+  "pytest-cov==6.2.1",
+  "ruff==0.12.5",
 ]
+
+[tool.setuptools]
+py-modules = []
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+strict_markers = true
+xfail_strict = true
+
+[tool.coverage.run]
+branch = true
+source = ["agent"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+fail_under = 85
+exclude_lines = [
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",
+]
 
 [tool.ruff]
 target-version = "py312"
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B"]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
