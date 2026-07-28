@@ -1,6 +1,11 @@
 name: Publish ARC to Kaggle
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "competitions/arc-prize-2026/publish/kaggle/**"
+      - ".github/workflows/publish-arc-kaggle.yml"
   workflow_dispatch:
     inputs:
       publish_competition_kernel:
@@ -58,7 +63,7 @@ jobs:
           fi
 
       - name: Build and validate private competition kernel
-        if: ${{ inputs.publish_competition_kernel }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_competition_kernel }}
         working-directory: competitions/arc-prize-2026
         run: |
           set -euo pipefail
@@ -67,7 +72,7 @@ jobs:
           make notebook
 
       - name: Install private Kaggle token in ignored runtime
-        if: ${{ inputs.publish_competition_kernel }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_competition_kernel }}
         working-directory: competitions/arc-prize-2026
         run: |
           set -euo pipefail
@@ -77,12 +82,12 @@ jobs:
           chmod 600 .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
 
       - name: Push private competition kernel
-        if: ${{ inputs.publish_competition_kernel }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_competition_kernel }}
         working-directory: competitions/arc-prize-2026
         run: make submit
 
       - name: Important competition note
-        if: ${{ inputs.publish_competition_kernel }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_competition_kernel }}
         run: |
           echo "The private kernel version was pushed to Kaggle."
           echo "Kaggle still requires a deliberate Submit to Competition action using submission.parquet."
