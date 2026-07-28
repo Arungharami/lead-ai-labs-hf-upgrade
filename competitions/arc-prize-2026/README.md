@@ -1,144 +1,218 @@
-# Lead.AI ARC Prize 2026 Agent Lab
+# Lead.AI ARC Prize 2026 Production Agent Lab
 
 [![Competition](https://img.shields.io/badge/Kaggle-ARC--AGI--3-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/competitions/arc-prize-2026-arc-agi-3)
-[![Track](https://img.shields.io/badge/Track-Interactive%20Reasoning-7C3AED)](https://arcprize.org/competitions/2026/arc-agi-3)
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Baseline%20Engineering-orange)](#current-status)
+[![Agent](https://img.shields.io/badge/Agent-lead--ai--symbolic--v2-7C3AED)](agent/my_agent.py)
+[![Status](https://img.shields.io/badge/Status-Submission%20Ready-16A34A)](docs/PRODUCTION_READINESS.md)
 
-A professional, reproducible competition project for **ARC Prize 2026 — ARC-AGI-3**, developed under the Lead.AI Labs portfolio by **Arun Kumar Gharami**.
+A reproducible ARC Prize 2026 — ARC-AGI-3 competition workspace developed by
+**Arun Kumar Gharami / Lead.AI Labs**.
 
-The project is designed to produce a valid Kaggle submission quickly, then improve it through controlled experiments in perception, memory, exploration, planning, and optional local vision-language-model inference.
+The repository provides a deterministic symbolic reasoning agent, a pinned copy
+of the official Kaggle starter, pinned critical runtime versions, local and
+integration tests, secret checks, notebook validation, experiment governance,
+and GitHub Actions quality gates.
 
-> Prize money is possible but not guaranteed. This repository is an engineering and research effort intended to maximize submission quality, reproducibility, and portfolio value.
+> No software project can truthfully guarantee a perfect leaderboard result or
+> zero defects in every future external environment. This project instead uses
+> explicit version locks, automated tests, official-runtime smoke checks, and
+> controlled release gates to make failures detectable and reproducible.
 
-## Competition target
+## Current release
 
-ARC-AGI-3 evaluates agents in novel interactive environments without natural-language instructions. An agent must inspect changing 64×64 grid observations, infer goals and mechanics, select legal actions, remember discoveries, and complete levels efficiently.
+| Item | Value |
+|---|---|
+| Agent | `lead-ai-symbolic-v2` |
+| Kernel | `arungharami/lead-ai-arc-prize-2026-agent-v2` |
+| Accelerator | CPU |
+| Python | 3.12+ |
+| Unit tests | 26 |
+| Coverage gate | 85% minimum |
+| Official starter | pinned in `config/runtime-lock.env` |
+| ARC toolkit | `0.9.9` |
+| Kaggle CLI | `2.2.3` |
+| Internet in Kaggle | disabled |
+| Official leaderboard score | pending account-authorized submission |
 
-Primary deadlines:
+## What is implemented
 
-- **September 30, 2026:** Milestone Prize #2
-- **November 2, 2026:** Final competition submissions
-- **November 8, 2026:** Paper submissions
-- **December 4, 2026:** Results announced
+### Agent intelligence
 
-## Current status
+- strict frame normalization and malformed-grid rejection;
+- collision-resistant state signatures with row-boundary encoding;
+- four-connected component extraction;
+- player and goal color-role estimation;
+- shortest-path movement around detected wall cells;
+- fallback goal-vector movement;
+- rare-object and goal-component click exploration;
+- legal-action normalization;
+- state-specific failed-action memory;
+- dead-click memory;
+- online action-value updates;
+- deterministic exploration by game identifier;
+- full-reset, death, level-transition, and stagnation recovery;
+- complex-action coordinate enforcement within the ARC `0..63` contract;
+- compact JSON-serializable action reasoning.
 
-This first implementation contains:
+### Engineering controls
 
-- a Kaggle-compatible `MyAgent` class;
-- deterministic state hashing and reproducible action selection;
-- player and target detection for movement-style environments;
-- connected-component analysis for click-target discovery;
-- novelty-based exploration and loop avoidance;
-- online action-value updates from observed screen changes;
-- legal-action filtering and robust fallbacks;
-- reset and stagnation recovery;
-- structured reasoning metadata for every action;
-- unit tests for the dependency-free reasoning core;
-- an official-starter bootstrap and submission workflow;
-- an experiment log and milestone roadmap.
+- pinned official starter and agent-framework commits;
+- pinned critical `arc-agi` and Kaggle CLI versions;
+- CPU-first notebook configuration;
+- private, internet-disabled Kaggle metadata;
+- offline production preflight;
+- source and generated-notebook secret scanning;
+- unit and branch coverage gates;
+- lint, formatting, compilation, and shell syntax checks;
+- official-runtime notebook-build smoke workflow;
+- experiment and submission registry;
+- release and incident-response checklists.
 
 ## Repository structure
 
 ```text
 competitions/arc-prize-2026/
 ├── README.md
+├── SECURITY.md
 ├── Makefile
 ├── pyproject.toml
-├── .gitignore
+├── config/
+│   └── runtime-lock.env
 ├── agent/
 │   └── my_agent.py
 ├── notebooks/
 │   └── kernel-metadata.json
 ├── scripts/
-│   └── bootstrap_official_starter.sh
+│   ├── bootstrap_official_starter.sh
+│   ├── configure_official_starter.py
+│   ├── pin_official_framework.sh
+│   └── preflight.py
 ├── tests/
 │   └── test_agent_core.py
 └── docs/
     ├── COMPETITION_STRATEGY.md
     ├── EXPERIMENT_LOG.md
-    └── KAGGLE_RUNBOOK.md
+    ├── KAGGLE_RUNBOOK.md
+    └── PRODUCTION_READINESS.md
 ```
 
 ## Quick start
 
-Requirements: Python 3.12, Git, Make, a Kaggle account, accepted competition rules, and a Kaggle API token.
+Use Linux, macOS, or Windows through WSL/Git Bash with Python 3.12, Git, and
+GNU Make.
 
 ```bash
 cd competitions/arc-prize-2026
 
-# Clone and configure the official ARC Kaggle starter.
-make bootstrap
-
-# Put the Kaggle token in the runtime starter, never in Git.
-mkdir -p .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle
-printf '%s' 'KGAT_your_token_here' > \
-  .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
-chmod 600 .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
-
-# Install the official environment.
+python3.12 -m pip install -e '.[dev]'
+make ci
 make setup
+make notebook
+```
 
-# Run local games and smoke tests.
+`make setup` performs the following:
+
+1. checks out the exact official starter commit;
+2. applies the locked CPU and dependency configuration;
+3. copies the Lead.AI agent and Kaggle metadata;
+4. installs the official runtime;
+5. pins the official agent framework;
+6. runs the production preflight.
+
+## Secure Kaggle authentication
+
+Accept the competition rules through the Kaggle website, then save the token
+only inside the ignored runtime directory:
+
+```bash
+mkdir -p .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle
+
+printf '%s' 'YOUR_PRIVATE_KAGGLE_TOKEN' > \
+  .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
+
+chmod 600 \
+  .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
+```
+
+Validate the credential without displaying it:
+
+```bash
+python3.12 scripts/preflight.py --require-token
+```
+
+Never paste the token into ChatGPT, source code, a notebook, an issue, an email,
+or a commit.
+
+## Local evaluation
+
+```bash
 make verify
+make play-game GAME=ls20
 make play
+```
 
-# Build and push a Kaggle notebook run.
+A zero local score is still a valid engineering baseline when the pipeline
+finishes without invalid actions or crashes. Record it honestly in
+`docs/EXPERIMENT_LOG.md`.
+
+## Kaggle notebook submission
+
+```bash
+make notebook
 make submit
 make status
 ```
 
-When the Kaggle notebook run is complete, open it on Kaggle and deliberately select **Submit to Competition** using its generated `submission.parquet` output.
+After the Kaggle notebook run completes:
 
-## Agent architecture
+1. open the notebook version on Kaggle;
+2. inspect the execution output;
+3. select **Submit to Competition**;
+4. select `submission.parquet`;
+5. record the experiment ID, commit SHA, notebook version, runtime, and score.
 
-```text
-Observation
-   │
-   ├── Grid normalization and hashing
-   ├── Frame-difference measurement
-   ├── Connected-component extraction
-   ├── Player/goal estimation
-   │
-   ▼
-Episodic Memory
-   ├── Seen-state counts
-   ├── Action statistics
-   ├── Failed-action memory
-   ├── Level-transition tracking
-   │
-   ▼
-Policy
-   ├── Goal-directed movement when confidence is high
-   ├── Rare-object click exploration when applicable
-   ├── Novelty/UCB exploration otherwise
-   └── Stagnation recovery and reset
-   │
-   ▼
-GameAction + auditable reasoning metadata
-```
+The repository cannot perform the final account-authorized Kaggle UI action or
+accept competition rules on the user's behalf.
 
-## Development principles
+## Quality commands
 
-1. **Valid submission before sophistication.** Preserve compatibility with the official starter and Kaggle runtime.
-2. **Measure every change.** Every feature must have an experiment ID, local score, Kaggle score, runtime, and conclusion.
-3. **Avoid public-game overfitting.** Prefer generic perception and memory mechanisms over one-game scripts.
-4. **Keep secrets out of Git.** Kaggle and model tokens belong only in ignored local files or Kaggle Secrets.
-5. **Open-source readiness.** Prize eligibility requires a reproducible solution and clear documentation.
-6. **Use submission quota carefully.** Run local verification before spending one of the daily official submissions.
+| Command | Purpose |
+|---|---|
+| `make preflight` | Validate configuration, metadata, agent contract, secrets, and runtime sync |
+| `make test` | Run 26 tests with branch-aware coverage |
+| `make lint` | Run Ruff lint rules |
+| `make format-check` | Verify deterministic formatting |
+| `make shell-check` | Validate shell script syntax |
+| `make ci` | Run all repository quality gates |
+| `make bootstrap` | Restore and configure the pinned official starter |
+| `make setup` | Install and pin the complete official runtime |
+| `make notebook` | Build and validate the Kaggle notebook |
+| `make verify` | Run the official quick game smoke test |
+| `make play` | Run all locally available games |
+| `make clean` | Remove generated outputs while preserving the runtime token |
+| `make distclean` | Remove the entire runtime, including the local token |
 
-## Next research upgrades
+## Release policy
 
-- action-plan queue with automatic invalid-plan repair;
-- dead-click signatures and object-level interaction memory;
-- compact reflection memory every 8–12 actions;
-- multi-view rendering: raw grid, symbolic map, and cropped regions;
-- offline VLM policy using a Kaggle-compatible open model;
-- candidate-action generation plus a lightweight arbiter;
-- cross-seed evaluation and bootstrap confidence intervals;
-- ARC-AGI-2 static-reasoning companion track and paper submission.
+A candidate is not promoted unless:
 
-## Attribution
+- `make ci` passes;
+- the official runtime smoke workflow passes;
+- `make verify` passes locally;
+- a full game run completes without crashes;
+- the experiment hypothesis was written before leaderboard feedback;
+- the exact commit and notebook version are recorded;
+- no secret or private data is present;
+- the Kaggle submission is manually verified.
 
-The runtime workflow is intentionally built around the official `arcprize/ARC-AGI-3-Kaggle-Starter` and ARC-AGI toolkit. This project adds a Lead.AI research policy, testing, documentation, and experiment-management layer; it does not claim ownership of the ARC benchmark or official starter framework.
+See [Production Readiness](docs/PRODUCTION_READINESS.md),
+[Kaggle Runbook](docs/KAGGLE_RUNBOOK.md), and
+[Experiment Log](docs/EXPERIMENT_LOG.md).
+
+## Attribution and licensing
+
+The runtime integration is based on the official ARC Prize starter and agent
+framework. The Lead.AI code adds a symbolic policy, planning, testing,
+reproducibility, security, and experiment-management layer. The benchmark,
+competition, official starter, and official runtime remain the property of
+their respective maintainers.
