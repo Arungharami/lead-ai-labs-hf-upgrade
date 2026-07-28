@@ -1,0 +1,18 @@
+{
+  "title": "Lead.AI ARC Agent Trace Schema",
+  "id": "arungharami/lead-ai-arc-agent-trace-schema",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0"
+    }
+  ],
+  "keywords": [
+    "arc-agi",
+    "arc-agi-3",
+    "artificial-intelligence",
+    "agents",
+    "reasoning",
+    "synthetic-data",
+    "reinforcement-learning"
+  ]
+}
