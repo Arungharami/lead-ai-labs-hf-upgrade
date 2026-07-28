@@ -1,10 +1,16 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import platform
 from datetime import datetime, timezone
 from pathlib import Path
 
+import joblib
+import numpy as np
+import pandas as pd
+import sklearn
 from sklearn.model_selection import train_test_split
 
 from lead_ai_bench.data import (
@@ -32,6 +38,36 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--minimum-recall", type=float, default=0.80)
     parser.add_argument("--output-dir", default="artifacts/fraud-detection-xai")
     return parser.parse_args()
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def runtime_metadata() -> dict[str, object]:
+    return {
+        "python": platform.python_version(),
+        "python_implementation": platform.python_implementation(),
+        "platform": platform.platform(),
+        "packages": {
+            "joblib": joblib.__version__,
+            "numpy": np.__version__,
+            "pandas": pd.__version__,
+            "scikit-learn": sklearn.__version__,
+        },
+        "serialization": "joblib/pickle-compatible; load only from a trusted revision",
+    }
+
+
+def write_checksum_manifest(output_dir: Path, filenames: list[str]) -> Path:
+    manifest_path = output_dir / "SHA256SUMS.txt"
+    lines = [f"{sha256_file(output_dir / name)}  {name}" for name in filenames]
+    manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return manifest_path
 
 
 def main() -> None:
@@ -73,16 +109,25 @@ def main() -> None:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     generated_at = datetime.now(timezone.utc).isoformat()
+    runtime = runtime_metadata()
     metadata = {
         "generated_at": generated_at,
         "data_source": source_description,
         "seed": args.seed,
+        "minimum_recall": args.minimum_recall,
         "feature_names": feature_names,
         "train_rows": int(len(X_train)),
         "validation_rows": int(len(X_validation)),
         "test_rows": int(len(X_test)),
+        "runtime": runtime,
     }
-    save_model_bundle(training, threshold, output_dir / "model.joblib", metadata)
+
+    model_path = save_model_bundle(
+        training,
+        threshold,
+        output_dir / "model.joblib",
+        metadata,
+    )
 
     report = {
         "metadata": metadata,
@@ -96,10 +141,29 @@ def main() -> None:
             "The model is a decision-support component, not an autonomous adverse-action system.",
         ],
     }
-    (output_dir / "metrics.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-    (output_dir / "feature_schema.json").write_text(
-        json.dumps({"features": feature_names, "target": args.target_column or "auto"}, indent=2),
+
+    metrics_path = output_dir / "metrics.json"
+    schema_path = output_dir / "feature_schema.json"
+    runtime_path = output_dir / "runtime.json"
+
+    metrics_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    schema_path.write_text(
+        json.dumps(
+            {
+                "features": feature_names,
+                "target": args.target_column or "auto",
+                "target_values": [0, 1],
+                "identifier_columns_excluded": ["transaction_id", "id", "ID"],
+            },
+            indent=2,
+        ),
         encoding="utf-8",
+    )
+    runtime_path.write_text(json.dumps(runtime, indent=2), encoding="utf-8")
+
+    write_checksum_manifest(
+        output_dir,
+        [model_path.name, metrics_path.name, schema_path.name, runtime_path.name],
     )
     print(json.dumps(report, indent=2))
 

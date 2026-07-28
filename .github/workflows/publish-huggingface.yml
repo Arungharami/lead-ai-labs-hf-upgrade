@@ -3,15 +3,19 @@ name: Publish Verified Model to Hugging Face
 on:
   workflow_dispatch:
     inputs:
-      source:
-        description: "Training source"
+      synthetic_rows:
+        description: "Number of reproducible synthetic training rows"
         required: true
-        default: "synthetic"
+        default: "10000"
         type: choice
-        options: [synthetic, repository_csv]
+        options: [5000, 10000, 25000]
 
 permissions:
   contents: read
+
+concurrency:
+  group: huggingface-production-release
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -27,25 +31,49 @@ jobs:
       - run: pip install -e ".[dev,huggingface]"
       - name: Run test suite
         run: pytest
-      - name: Train candidate model
-        run: |
-          if [ "${{ inputs.source }}" = "repository_csv" ]; then
-            python scripts/train_and_evaluate.py --source csv --output-dir artifacts/fraud-detection-xai
-          else
-            python scripts/train_and_evaluate.py --source synthetic --synthetic-rows 10000 --seed 42 --output-dir artifacts/fraud-detection-xai
-          fi
-      - name: Enforce release gates
+      - name: Train reproducible release candidate
+        run: >-
+          python scripts/train_and_evaluate.py
+          --source synthetic
+          --synthetic-rows ${{ inputs.synthetic_rows }}
+          --seed 42
+          --output-dir artifacts/fraud-detection-xai
+      - name: Enforce release structure, runtime and quality gates
         run: |
           python - <<'PY'
           import json
-          report = json.load(open('artifacts/fraud-detection-xai/metrics.json'))
+          from pathlib import Path
+
+          artifact_dir = Path('artifacts/fraud-detection-xai')
+          required = {
+              'model.joblib',
+              'metrics.json',
+              'feature_schema.json',
+              'runtime.json',
+              'SHA256SUMS.txt',
+          }
+          present = {path.name for path in artifact_dir.iterdir() if path.is_file()}
+          missing = required - present
+          assert not missing, f'Missing release files: {sorted(missing)}'
+
+          report = json.loads((artifact_dir / 'metrics.json').read_text())
+          runtime = json.loads((artifact_dir / 'runtime.json').read_text())
           test = report['test']
+          assert report['metadata']['data_source'].startswith('synthetic:'), report['metadata']
+          assert runtime['packages']['scikit-learn'] == '1.9.0', runtime
           assert test['pr_auc'] >= max(0.20, test['positive_rate'] * 3.0), test
           assert test['roc_auc'] >= 0.75, test
           assert test['recall'] >= 0.70, test
           assert test['latency_ms_per_row'] < 10.0, test
           print('Release gates passed:', test)
           PY
+          cd artifacts/fraud-detection-xai
+          sha256sum --check SHA256SUMS.txt
+      - name: Upload immutable CI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: huggingface-release-candidate
+          path: artifacts/fraud-detection-xai/
       - name: Upload versioned model artifacts
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -55,7 +83,7 @@ jobs:
           hf repos create lead-ai-labs/fraud-detection-xai --type model --exist-ok
           hf upload lead-ai-labs/fraud-detection-xai artifacts/fraud-detection-xai . \
             --type model \
-            --commit-message "Publish CI-verified fraud model and metrics"
+            --commit-message "Publish verified fraud model, runtime and checksums"
           hf upload lead-ai-labs/fraud-detection-xai models/fraud-detection-xai/README.md README.md \
             --type model \
-            --commit-message "Update model card"
+            --commit-message "Update auditable model card"

@@ -2,7 +2,7 @@ name: Fraud Benchmark CI
 
 on:
   push:
-    branches: [main, "feature/**"]
+    branches: [main, "feature/**", "fix/**"]
   pull_request:
   workflow_dispatch:
 
@@ -28,18 +28,39 @@ jobs:
           --synthetic-rows 5000
           --seed 42
           --output-dir artifacts/fraud-detection-xai
-      - name: Enforce minimum benchmark quality gates
+      - name: Enforce release structure and quality gates
         run: |
           python - <<'PY'
           import json
-          report = json.load(open('artifacts/fraud-detection-xai/metrics.json'))
+          from pathlib import Path
+
+          artifact_dir = Path('artifacts/fraud-detection-xai')
+          required = {
+              'model.joblib',
+              'metrics.json',
+              'feature_schema.json',
+              'runtime.json',
+              'SHA256SUMS.txt',
+          }
+          present = {path.name for path in artifact_dir.iterdir() if path.is_file()}
+          missing = required - present
+          assert not missing, f'Missing release files: {sorted(missing)}'
+
+          report = json.loads((artifact_dir / 'metrics.json').read_text())
+          runtime = json.loads((artifact_dir / 'runtime.json').read_text())
+          schema = json.loads((artifact_dir / 'feature_schema.json').read_text())
           test = report['test']
+
+          assert runtime['packages']['scikit-learn'] == '1.9.0', runtime
+          assert len(schema['features']) == 9, schema
           assert test['pr_auc'] >= max(0.20, test['positive_rate'] * 3.0), test
           assert test['roc_auc'] >= 0.75, test
           assert test['recall'] >= 0.70, test
           assert test['latency_ms_per_row'] < 10.0, test
-          print('Quality gates passed:', test)
+          print('Release structure and quality gates passed:', test)
           PY
+          cd artifacts/fraud-detection-xai
+          sha256sum --check SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
           name: fraud-detection-xai-artifacts
