@@ -45,4 +45,5 @@ Lead.AI can customize fraud detection, risk scoring, explainability dashboards, 
 * 🌐 **Visit Official Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
 * 💻 **GitHub Engineering Repo:** [https://github.com/Arungharami/lead-ai-fraud-shield](https://github.com/Arungharami/lead-ai-fraud-shield)
 * 🖥️ **Live Interactive Demo:** [https://huggingface.co/spaces/lead-ai-labs/lead-ai-fraud-shield-demo](https://huggingface.co/spaces/lead-ai-labs/lead-ai-fraud-shield-demo)
+* 📊 **Kaggle Profile & Datasets:** [https://www.kaggle.com/arungharami](https://www.kaggle.com/arungharami)
 * 📊 **Dataset v2:** [https://huggingface.co/datasets/arun-gharami/lead-ai-fraud-detection-dataset-v2](https://huggingface.co/datasets/arun-gharami/lead-ai-fraud-detection-dataset-v2)

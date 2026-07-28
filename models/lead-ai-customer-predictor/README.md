@@ -37,4 +37,5 @@ Lead.AI Labs designs tailored predictive customer intelligence pipelines and API
 
 * 🌐 **Visit Official Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
 * 💻 **GitHub Control Center:** [https://github.com/Arungharami/lead-ai-hf-portfolio](https://github.com/Arungharami/lead-ai-hf-portfolio)
+* 📊 **Kaggle Profile Showcase:** [https://www.kaggle.com/arungharami](https://www.kaggle.com/arungharami)
 * 📧 **Book Consultation:** [https://www.lead-ai.us#contact](https://www.lead-ai.us#contact)

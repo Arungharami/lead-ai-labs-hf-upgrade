@@ -37,4 +37,5 @@ Lead.AI Labs builds custom NLP review sentinels, automated support routers, and 
 
 * 🌐 **Visit Official Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
 * 💻 **GitHub Control Center:** [https://github.com/Arungharami/lead-ai-hf-portfolio](https://github.com/Arungharami/lead-ai-hf-portfolio)
+* 📊 **Kaggle Profile Showcase:** [https://www.kaggle.com/arungharami](https://www.kaggle.com/arungharami)
 * 📧 **Book Consultation:** [https://www.lead-ai.us#contact](https://www.lead-ai.us#contact)
