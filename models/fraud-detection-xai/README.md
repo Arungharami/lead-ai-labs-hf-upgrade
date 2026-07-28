@@ -18,16 +18,18 @@ tags:
 
 It is **not** a production fraud service, a credit-scoring system, or an autonomous adverse-action system.
 
-## Release status
+## Verified release contents
 
-The verified publishing workflow uploads these files after tests and release gates pass:
+The protected publishing workflow uploads these files only after tests, quality gates, runtime checks, and checksum verification pass:
 
-- `model.joblib` — fitted estimator, feature order, operating threshold, candidate scores, and provenance metadata.
+- `model.joblib` — fitted estimator, ordered features, operating threshold, candidate scores, and provenance metadata.
 - `metrics.json` — validation and untouched-test metrics.
-- `feature_schema.json` — required feature names and target information.
+- `feature_schema.json` — required feature order, target values, and excluded identifier columns.
+- `runtime.json` — Python, operating-platform, and package versions used to build the artifact.
+- `SHA256SUMS.txt` — SHA-256 integrity values for the four generated artifacts.
 - `README.md` — this model card.
 
-A Hub page that contains only this card and not the three generated artifacts is documentation-only and should not be represented as a deployed trained model.
+A Hub page that contains only this card and not the five generated release files is documentation-only and must not be represented as a deployed trained model.
 
 ## Model-development process
 
@@ -51,6 +53,7 @@ For the reproducible CI benchmark below, balanced logistic regression was select
 | Test rows | 1,000 |
 | Test fraud prevalence | 8.3% |
 | Validation-selected threshold | 0.4928 |
+| Serialized runtime | Python 3.11 / scikit-learn 1.9.0 |
 
 ### Untouched-test results
 
@@ -84,25 +87,44 @@ These results measure a controlled **synthetic** benchmark, not real-world or in
 | `previous_chargebacks` | integer | Prior chargeback count |
 | `payment_method_risk` | float, 0–1 | Payment-instrument risk signal |
 
-`transaction_id` is intentionally excluded from training to reduce identifier leakage.
+`transaction_id`, `id`, and `ID` are intentionally excluded from training to reduce identifier leakage.
 
-## Loading a verified artifact
+## Secure loading procedure
 
-Only load serialized model files from a repository and revision you trust. `joblib` uses pickle-compatible serialization and can execute code during loading.
+`joblib` uses pickle-compatible serialization and can execute code during loading. Only load the model from a repository and immutable revision you trust. Verify the Hub security scan, pin a commit SHA, use the runtime recorded in `runtime.json`, and validate checksums before deserialization.
+
+```bash
+python -m pip install \
+  "joblib>=1.3,<2" \
+  "numpy>=1.26,<3" \
+  "pandas>=2.1,<3" \
+  "scikit-learn==1.9.0" \
+  huggingface_hub
+```
 
 ```python
+import hashlib
 import joblib
 import pandas as pd
 from huggingface_hub import hf_hub_download
 
+repo_id = "lead-ai-labs/fraud-detection-xai"
 revision = "PIN_A_TRUSTED_COMMIT_SHA"
-model_path = hf_hub_download(
-    repo_id="lead-ai-labs/fraud-detection-xai",
-    filename="model.joblib",
-    revision=revision,
-)
-bundle = joblib.load(model_path)
 
+model_path = hf_hub_download(repo_id, "model.joblib", revision=revision)
+checksums_path = hf_hub_download(repo_id, "SHA256SUMS.txt", revision=revision)
+
+expected = {}
+with open(checksums_path, encoding="utf-8") as handle:
+    for line in handle:
+        digest, filename = line.strip().split(maxsplit=1)
+        expected[filename] = digest
+
+actual = hashlib.sha256(open(model_path, "rb").read()).hexdigest()
+if actual != expected["model.joblib"]:
+    raise RuntimeError("Model checksum verification failed")
+
+bundle = joblib.load(model_path)
 record = pd.DataFrame([{
     "amount": 1250.00,
     "transaction_hour": 3,
@@ -146,6 +168,7 @@ The current release provides an auditable feature schema, transparent candidate 
 - Calibration is not production-ready and must be reassessed on representative labels.
 - Fairness testing requires lawful, carefully governed evaluation data and is not supplied by this synthetic benchmark.
 - The small 105-row repository CSV is for smoke testing, not a defensible independent benchmark.
+- Joblib artifacts are tied to their recorded software runtime; cross-version loading is unsupported.
 
 ## Reproduction
 
@@ -157,6 +180,8 @@ python scripts/train_and_evaluate.py \
   --synthetic-rows 5000 \
   --seed 42 \
   --output-dir artifacts/fraud-detection-xai
+cd artifacts/fraud-detection-xai
+sha256sum --check SHA256SUMS.txt
 ```
 
 See `BENCHMARKS.md` in the engineering repository for Kaggle Benchmarks and Hugging Face publishing procedures.
