@@ -2,26 +2,27 @@
 
 [![Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
-[![Kaggle](https://img.shields.io/badge/Kaggle-arungharami-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/arungharami)
+[![Kaggle Benchmark](https://img.shields.io/badge/Kaggle-Live%20Benchmark-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/benchmarks/arungharami/lead-ai-fraud-risk-reasoning-benchmark/leaderboard)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
 This repository is the engineering source of truth for the Lead.AI Fraud Shield research baseline and its GitHub, Hugging Face, and Kaggle assets.
 
-It includes a reproducible tabular model pipeline, held-out evaluation, objective Kaggle Community Benchmark tasks, automated quality gates, artifact integrity checks, and controlled Hugging Face publishing. It also retains the associated dataset cards, demo assets, notebooks, and portfolio materials.
+It includes a reproducible tabular model pipeline, held-out evaluation, three deterministic Kaggle Community Benchmark tasks, automated quality gates, artifact-integrity checks, and controlled publishing workflows.
 
 ## Verified status
 
-- **GitHub implementation:** merged, pull-request reviewed, and CI-tested.
+- **GitHub implementation:** merged and CI-tested.
 - **Model training:** balanced logistic regression and random forest candidates selected by out-of-fold PR-AUC.
 - **Evaluation:** train, validation, and untouched-test partitions; threshold selected on validation only.
 - **Runtime:** Python 3.11 with scikit-learn 1.9.0 pinned for model-bundle portability.
 - **Artifact integrity:** runtime provenance and SHA-256 checksums generated for every release.
-- **Kaggle Benchmarks:** structured fraud-risk reasoning task with objective assertions and audited cases.
+- **Kaggle Benchmarks:** policy reasoning, adversarial safety, and uncertainty escalation tasks with deterministic grading.
+- **Kaggle publishing:** protected manual GitHub workflow requiring `KAGGLE_API_TOKEN`.
 - **Hugging Face publishing:** protected manual workflow requiring a write-scoped `HF_TOKEN`.
 - **105-row CSV:** synthetic smoke-test data only; not a production corpus or independent benchmark.
 - **Existing Gradio app:** transparent rule-based demonstration; not yet the serialized trained model.
 
-## Reproducible synthetic benchmark
+## Reproducible synthetic model benchmark
 
 The CI reference run uses 5,000 probabilistic synthetic transactions with seed 42 and a 60/20/20 split.
 
@@ -44,15 +45,17 @@ These are controlled synthetic results, not real-world or institutional performa
 lead-ai-labs-hf-upgrade/
 ├── src/lead_ai_bench/                  # Data, model selection and evaluation package
 ├── scripts/train_and_evaluate.py       # Reproducible train/validation/test pipeline
-├── tests/                              # End-to-end automated verification
-├── kaggle/benchmarks/                  # Kaggle Community Benchmark task and cases
+├── tests/                              # End-to-end and Kaggle task contract tests
+├── kaggle/benchmarks/                  # Three self-contained Community Benchmark tasks
 ├── models/fraud-detection-xai/         # Auditable Hugging Face model card
 ├── datasets/                           # Synthetic dataset cards and CSV assets
 ├── spaces/                             # Gradio demo source
 ├── .github/workflows/
 │   ├── benchmark-ci.yml                # Test, train, verify and upload CI artifact
-│   └── publish-huggingface.yml         # Protected verified Hub release
-├── BENCHMARKS.md                       # Complete benchmark operating guide
+│   ├── publish-huggingface.yml         # Protected verified Hub release
+│   └── publish-kaggle-benchmarks.yml   # Protected task publish and model-run workflow
+├── BENCHMARKS.md                       # Model benchmark operating guide
+├── KAGGLE_BENCHMARK_DEPLOYMENT.md      # Live leaderboard deployment guide
 ├── upload_commands.md                  # Current `hf` CLI commands
 └── deployment_and_git_guide.md         # Reviewed release process
 ```
@@ -107,29 +110,37 @@ The protected public-release workflow intentionally does not publish a model tra
 
 ## Kaggle Community Benchmark
 
+Live leaderboard:
+
+`https://www.kaggle.com/benchmarks/arungharami/lead-ai-fraud-risk-reasoning-benchmark/leaderboard`
+
+The suite contains:
+
+1. `lead-ai-fraud-policy-reasoning` — 15 balanced policy, scoring, JSON, and reason-code cases.
+2. `lead-ai-fraud-adversarial-safety` — 8 prompt-injection and identity-pressure cases.
+3. `lead-ai-fraud-uncertainty-escalation` — 8 invalid or missing-input cases requiring human review.
+
+All expected outcomes are deterministic; the suite does not use an LLM judge.
+
+Preferred release path: add `KAGGLE_API_TOKEN` to the protected `kaggle-production` GitHub environment, then run **Publish Kaggle Benchmark Suite**. The workflow tests, pushes, publishes, runs, and verifies all tasks. Kaggle's benchmark editor is then used to attach the three public tasks to the benchmark collection.
+
+Full instructions: [`KAGGLE_BENCHMARK_DEPLOYMENT.md`](KAGGLE_BENCHMARK_DEPLOYMENT.md).
+
+Local authenticated commands:
+
 ```bash
-python -m pip install -e ".[kaggle]"
+python -m pip install "kaggle==2.2.0"
 kaggle auth login
-python kaggle/benchmarks/run_benchmark.py
+kaggle b t push lead-ai-fraud-policy-reasoning -f kaggle/benchmarks/fraud_risk_reasoning.py --wait
+kaggle b t push lead-ai-fraud-adversarial-safety -f kaggle/benchmarks/fraud_adversarial_safety.py --wait
+kaggle b t push lead-ai-fraud-uncertainty-escalation -f kaggle/benchmarks/fraud_uncertainty_escalation.py --wait
 ```
-
-The benchmark checks:
-
-- exact JSON structure;
-- audited APPROVE, REVIEW, or DECLINE decisions;
-- acceptable risk-score ranges;
-- required evidence reason codes; and
-- avoidance of protected or sensitive attributes.
-
-Use `kaggle benchmarks --help` and `kaggle benchmarks tasks --help` for the exact commands supported by the installed Kaggle CLI.
 
 ## Hugging Face publishing
 
 The preferred release path is GitHub Actions: **Publish Verified Model to Hugging Face**. Add `HF_TOKEN` to the protected `huggingface-production` environment, then run the workflow manually.
 
 The workflow reruns tests, retrains the candidate, verifies the pinned runtime, enforces minimum quality and latency gates, checks SHA-256 integrity, stores an immutable GitHub artifact, and only then uploads to Hugging Face.
-
-Current local CLI flow:
 
 ```bash
 python -m pip install --upgrade huggingface_hub
