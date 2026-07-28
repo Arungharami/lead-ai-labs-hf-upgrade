@@ -1,0 +1,40 @@
+name: Validate Kaggle Customer Intelligence
+
+on:
+  pull_request:
+    paths:
+      - "kaggle/customer-intelligence/**"
+      - ".github/workflows/kaggle-customer-intelligence-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "kaggle/customer-intelligence/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: kaggle/customer-intelligence/requirements.txt
+
+      - name: Install dependencies
+        run: python -m pip install -r kaggle/customer-intelligence/requirements.txt
+
+      - name: Generate deterministic dataset
+        run: python kaggle/customer-intelligence/scripts/generate_dataset.py
+
+      - name: Build reproducible notebook
+        run: python kaggle/customer-intelligence/scripts/build_notebook.py
+
+      - name: Validate dataset and notebook
+        run: python kaggle/customer-intelligence/scripts/validate_assets.py

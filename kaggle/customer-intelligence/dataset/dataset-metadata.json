@@ -1,0 +1,19 @@
+{
+  "title": "Lead.AI Customer Intelligence Dataset",
+  "id": "arungharami/lead-ai-customer-intelligence-dataset",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0"
+    }
+  ],
+  "keywords": [
+    "customer analytics",
+    "lead scoring",
+    "churn prediction",
+    "small business",
+    "business automation",
+    "synthetic data",
+    "explainable ai",
+    "lead-ai"
+  ]
+}
