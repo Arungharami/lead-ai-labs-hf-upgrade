@@ -54,8 +54,11 @@ jobs:
             --cov-report=xml \
             --cov-fail-under=85
 
-      - name: Lint
-        run: python -m ruff check agent tests scripts
+      - name: Check correctness and import hygiene
+        run: >-
+          python -m ruff check
+          --select F,I,UP,B
+          agent tests scripts
 
       - name: Check formatting
         run: python -m ruff format --check agent tests scripts
