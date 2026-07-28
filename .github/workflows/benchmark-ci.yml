@@ -1,0 +1,46 @@
+name: Fraud Benchmark CI
+
+on:
+  push:
+    branches: [main, "feature/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+      - run: pytest
+      - name: Train reproducible synthetic benchmark model
+        run: >-
+          python scripts/train_and_evaluate.py
+          --source synthetic
+          --synthetic-rows 5000
+          --seed 42
+          --output-dir artifacts/fraud-detection-xai
+      - name: Enforce minimum benchmark quality gates
+        run: |
+          python - <<'PY'
+          import json
+          report = json.load(open('artifacts/fraud-detection-xai/metrics.json'))
+          test = report['test']
+          assert test['pr_auc'] >= max(0.20, test['positive_rate'] * 3.0), test
+          assert test['roc_auc'] >= 0.75, test
+          assert test['recall'] >= 0.70, test
+          assert test['latency_ms_per_row'] < 10.0, test
+          print('Quality gates passed:', test)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fraud-detection-xai-artifacts
+          path: artifacts/fraud-detection-xai/
