@@ -1,137 +1,157 @@
-# Lead.AI Labs Hugging Face & Kaggle Upgrade Control Center
+# Lead.AI Labs — Fraud Benchmark, Hugging Face and Kaggle Control Center
 
 [![Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
-[![GitHub](https://img.shields.io/badge/GitHub-lead--ai--labs--hf--upgrade-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
-[![Kaggle Profile](https://img.shields.io/badge/Kaggle-arungharami-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/arungharami)
+[![Kaggle](https://img.shields.io/badge/Kaggle-arungharami-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/arungharami)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 
-This repository manages the professional Hugging Face and Kaggle upgrades for Lead.AI Labs, including organization card content, model cards, dataset cards, Space demo files, Kaggle CLI dataset/notebook bridge packages, upload commands, website link mapping, and launch materials.
+This repository is the engineering source of truth for the Lead.AI Fraud Shield research baseline and its GitHub, Hugging Face, and Kaggle assets.
 
----
+It includes a reproducible tabular model pipeline, held-out evaluation, objective Kaggle Community Benchmark tasks, automated quality gates, artifact integrity checks, and controlled Hugging Face publishing. It also retains the associated dataset cards, demo assets, notebooks, and portfolio materials.
 
-## 🏢 Business Identity & Multi-Platform Links
+## Verified status
 
-* **Company Name:** Lead.AI Labs
-* **Tagline:** Trustworthy AI, fraud detection, predictive analytics, and automation systems for real business workflows.
-* **Founder:** Arun Kumar Gharami (AI Engineer & Applied Researcher)
-* **Main Business Identity:** Explainable AI Systems for Business Automation
-* **Official Website:** [www.lead-ai.us](https://www.lead-ai.us)
-* **GitHub Repository:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
-* **Hugging Face Organization:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
-* **Kaggle Profile:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami)
+- **GitHub implementation:** merged, pull-request reviewed, and CI-tested.
+- **Model training:** balanced logistic regression and random forest candidates selected by out-of-fold PR-AUC.
+- **Evaluation:** train, validation, and untouched-test partitions; threshold selected on validation only.
+- **Runtime:** Python 3.11 with scikit-learn 1.9.0 pinned for model-bundle portability.
+- **Artifact integrity:** runtime provenance and SHA-256 checksums generated for every release.
+- **Kaggle Benchmarks:** structured fraud-risk reasoning task with objective assertions and audited cases.
+- **Hugging Face publishing:** protected manual workflow requiring a write-scoped `HF_TOKEN`.
+- **105-row CSV:** synthetic smoke-test data only; not a production corpus or independent benchmark.
+- **Existing Gradio app:** transparent rule-based demonstration; not yet the serialized trained model.
 
----
+## Reproducible synthetic benchmark
 
-## 🎯 What This Repo Controls
+The CI reference run uses 5,000 probabilistic synthetic transactions with seed 42 and a 60/20/20 split.
 
-This repository serves as the centralized **Upgrade Control Center** to maintain, package, and sync all public AI portfolio assets for Lead.AI Labs across Hugging Face and Kaggle:
+| Untouched-test metric | Result |
+|---|---:|
+| ROC-AUC | 0.9021 |
+| PR-AUC | 0.5845 |
+| Recall | 0.7952 |
+| Precision | 0.3028 |
+| F1 | 0.4385 |
+| Balanced accuracy | 0.8147 |
+| MCC | 0.4206 |
+| Brier score | 0.1165 |
 
-1. **Organization Profile Card (`org-card/`):** Complete README markup for the Lead.AI Labs organization page.
-2. **Explainable AI Model Cards (`models/`):** Detailed card, schema, and XAI documentation for `lead-ai-labs/fraud-detection-xai`.
-3. **Structured Hugging Face Datasets (`datasets/`):** Clean tabular synthetic datasets and Hugging Face Dataset Viewer metadata (`fraud-detection-Table-data` & `fraud-detection-sample-data`).
-4. **Interactive Hugging Face Space (`spaces/`):** Source code (`app.py`, `requirements.txt`, `README.md`) for the Gradio-powered `lead-ai-fraud-shield-demo`.
-5. **Kaggle Data Science CLI Bridge (`kaggle/`):** Dataset metadata, Kaggle dataset packages, and executable Jupyter Notebook (`lead_ai_fraud_shield_kaggle_demo.ipynb`).
-6. **Collection Architecture (`collections/`):** Blueprint for structuring 4 specialized Hugging Face collections.
-7. **Website & Funnel Mapping (`website-link-map/`):** Navigation and cross-referencing strategy between `www.lead-ai.us`, GitHub, Hugging Face, and Kaggle.
-8. **Automated Deployment Scripts (`upload_commands.md` & `kaggle/kaggle_upload_commands.md`):** Safe, credential-free CLI commands for Hugging Face and Kaggle.
-9. **Product Launch Suite (`launch/`):** Launch checklist, LinkedIn announcement, and client pitch deck with service tier pricing.
+These are controlled synthetic results, not real-world or institutional performance claims.
 
----
-
-## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
-
-```text
-                        [ www.lead-ai.us ]
-        (Official Business Website & Enterprise Conversion Hub)
-                                ▲
-            ┌───────────────────┼───────────────────┐
-            │                   │                   │
-            ▼                   ▼                   ▼
- [ GitHub Control Center ] ◄► [ Hugging Face ] ◄► [ Kaggle Data Science ]
-  Engineering Proof & Code    Models, Datasets &   Benchmark Kernels & 
-  (Arungharami/lead-ai-       Interactive Space    Interactive EDA Notebooks
-     labs-hf-upgrade)         Demos (lead-ai-labs)    (arungharami)
-```
-
-* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
-* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center, source code & CLI sync scripts
-* 🤖 **Hugging Face Hub:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs) — Open-weight XAI models, tabular datasets & live Gradio web demos
-* 📊 **Kaggle Data Science Hub:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami) — Benchmark kernels, Kaggle datasets & interactive exploratory notebook analysis
-
----
-
-## 📂 Repository File Structure
+## Repository map
 
 ```text
 lead-ai-labs-hf-upgrade/
-├── README.md                           # Main Control Dashboard (This file)
-├── BRAND_GUIDE.md                      # Official Brand Identity & Tone Guidelines
-├── PLATFORM_STRATEGY.md                # Multi-channel Business Funnel Strategy
-├── FINAL_SUMMARY.md                    # Upgrade Audit & Executive Summary
-├── upload_commands.md                  # Safe Hugging Face CLI Sync Scripts
-├── org-card/
-│   └── README.md                       # Content for HF Org Profile
-├── models/
-│   └── fraud-detection-xai/
-│       └── README.md                   # Model Card for lead-ai-labs/fraud-detection-xai
-├── datasets/
-│   ├── fraud-detection-Table-data/
-│   │   ├── README.md                   # Dataset Card with HF Viewer YAML
-│   │   └── train.csv                   # 105-row synthetic tabular fraud dataset
-│   └── fraud-detection-sample-data/
-│       ├── README.md                   # Sample Dataset Card with HF Viewer YAML
-│       └── sample_data.csv             # 25-row sample dataset
-├── spaces/
-│   └── lead-ai-fraud-shield-demo/
-│       ├── README.md                   # HF Space Card
-│       ├── app.py                      # Interactive Gradio XAI Demo App
-│       └── requirements.txt            # Python Dependencies
-├── kaggle/                             # NEW Kaggle CLI Bridge
-│   ├── README.md                       # Kaggle Architecture Overview
-│   ├── kaggle_upload_commands.md       # Kaggle CLI Publishing Scripts
-│   ├── fraud-detection-table-data/     # Kaggle Dataset Package 1
-│   │   ├── dataset-metadata.json
-│   │   ├── README.md
-│   │   └── train.csv
-│   ├── fraud-detection-sample-data/    # Kaggle Dataset Package 2
-│   │   ├── dataset-metadata.json
-│   │   ├── README.md
-│   │   └── sample_data.csv
-│   └── notebooks/                      # Kaggle Kernel Package
-│       ├── dataset-metadata.json / notebook-metadata.json
-│       └── lead_ai_fraud_shield_kaggle_demo.ipynb
-├── collections/
-│   └── collection-plan.md              # 4 Curated Portfolio Collections
-├── website-link-map/
-│   └── lead-ai-platform-links.md       # Complete Cross-Platform URL System
-├── launch/
-│   ├── LAUNCH_CHECKLIST.md             # Pre-launch Quality Assurance Steps
-│   ├── LINKEDIN_POST.md                # Founder Announcement Copy
-│   └── CLIENT_PITCH.md                 # Client Outreach & Service Packages
-└── .gitignore                          # Git & Credential Exclusions (kaggle.json blocked)
+├── src/lead_ai_bench/                  # Data, model selection and evaluation package
+├── scripts/train_and_evaluate.py       # Reproducible train/validation/test pipeline
+├── tests/                              # End-to-end automated verification
+├── kaggle/benchmarks/                  # Kaggle Community Benchmark task and cases
+├── models/fraud-detection-xai/         # Auditable Hugging Face model card
+├── datasets/                           # Synthetic dataset cards and CSV assets
+├── spaces/                             # Gradio demo source
+├── .github/workflows/
+│   ├── benchmark-ci.yml                # Test, train, verify and upload CI artifact
+│   └── publish-huggingface.yml         # Protected verified Hub release
+├── BENCHMARKS.md                       # Complete benchmark operating guide
+├── upload_commands.md                  # Current `hf` CLI commands
+└── deployment_and_git_guide.md         # Reviewed release process
 ```
 
----
+## Local quickstart
 
-## 🚀 Quick Publishing Workflows
+Python 3.11 or newer is required. The project pins scikit-learn 1.9.0 because joblib model bundles are not guaranteed to be portable across scikit-learn versions.
 
-### 1. Hugging Face Deployment
 ```bash
-export HF_TOKEN="your_huggingface_write_token_here"
-huggingface-cli login --token $HF_TOKEN
-# Refer to upload_commands.md for full repo sync scripts
+python -m pip install -e ".[dev]"
+pytest
+python scripts/train_and_evaluate.py \
+  --source synthetic \
+  --synthetic-rows 5000 \
+  --seed 42 \
+  --output-dir artifacts/fraud-detection-xai
 ```
 
-### 2. Kaggle Deployment
+Generated release files:
+
+- `model.joblib` — fitted estimator and metadata bundle.
+- `metrics.json` — validation and untouched-test report.
+- `feature_schema.json` — ordered feature contract and target metadata.
+- `runtime.json` — Python, platform, and package versions.
+- `SHA256SUMS.txt` — integrity checks for the four generated artifacts.
+
+Verify artifact integrity:
+
 ```bash
-# Setup ~/.kaggle/kaggle.json with chmod 600
-kaggle datasets create -p kaggle/fraud-detection-table-data
-kaggle datasets create -p kaggle/fraud-detection-sample-data
-kaggle kernels push -p kaggle/notebooks
-# Refer to kaggle/kaggle_upload_commands.md for detailed versioning commands
+cd artifacts/fraud-detection-xai
+sha256sum --check SHA256SUMS.txt
 ```
 
----
+## Supported data inputs
 
-> **Safety Notice:** All datasets contained in this repository are 100% synthetic transaction data generated strictly for demonstration, evaluation, and research purposes. No real financial credentials, private card data, or PII are stored or processed.
+```bash
+# Repository CSV smoke test
+python scripts/train_and_evaluate.py \
+  --source csv \
+  --data-path datasets/fraud-detection-Table-data/train.csv
+
+# Hugging Face dataset adapter
+python -m pip install -e ".[huggingface]"
+python scripts/train_and_evaluate.py \
+  --source huggingface \
+  --hf-repo lead-ai-labs/fraud-detection-Table-data
+```
+
+Third-party Kaggle or Hugging Face datasets should remain under their own licenses. Do not copy or merge unrelated data blindly. Add a documented adapter, confirm license compatibility, remove duplicate leakage, and preserve an untouched test set.
+
+The protected public-release workflow intentionally does not publish a model trained on the 105-row smoke-test CSV.
+
+## Kaggle Community Benchmark
+
+```bash
+python -m pip install -e ".[kaggle]"
+kaggle auth login
+python kaggle/benchmarks/run_benchmark.py
+```
+
+The benchmark checks:
+
+- exact JSON structure;
+- audited APPROVE, REVIEW, or DECLINE decisions;
+- acceptable risk-score ranges;
+- required evidence reason codes; and
+- avoidance of protected or sensitive attributes.
+
+Use `kaggle benchmarks --help` and `kaggle benchmarks tasks --help` for the exact commands supported by the installed Kaggle CLI.
+
+## Hugging Face publishing
+
+The preferred release path is GitHub Actions: **Publish Verified Model to Hugging Face**. Add `HF_TOKEN` to the protected `huggingface-production` environment, then run the workflow manually.
+
+The workflow reruns tests, retrains the candidate, verifies the pinned runtime, enforces minimum quality and latency gates, checks SHA-256 integrity, stores an immutable GitHub artifact, and only then uploads to Hugging Face.
+
+Current local CLI flow:
+
+```bash
+python -m pip install --upgrade huggingface_hub
+hf auth login
+hf auth whoami
+hf repos create lead-ai-labs/fraud-detection-xai --type model --exist-ok
+hf upload lead-ai-labs/fraud-detection-xai artifacts/fraud-detection-xai . --type model
+hf upload lead-ai-labs/fraud-detection-xai models/fraud-detection-xai/README.md README.md --type model
+```
+
+Only describe the Hub repository as a trained model release after `model.joblib`, `metrics.json`, `feature_schema.json`, `runtime.json`, and `SHA256SUMS.txt` are present and verified.
+
+## Responsible use
+
+This project is for research, education, controlled prototyping, and engineering demonstrations. It must not be used as the sole basis for fraud accusations, account blocking, credit decisions, insurance decisions, law-enforcement reporting, or other regulated adverse actions.
+
+Real deployment requires representative labeled data, local threshold selection, calibration, drift monitoring, security review, incident response, compliance review, and human oversight.
+
+## Lead.AI Labs
+
+- Founder: Arun Kumar Gharami
+- Focus: trustworthy AI, explainable financial risk, predictive analytics, and business automation
+- Website: https://www.lead-ai.us
+- Hugging Face: https://huggingface.co/lead-ai-labs
+- Kaggle: https://www.kaggle.com/arungharami

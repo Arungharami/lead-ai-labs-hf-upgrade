@@ -7,122 +7,114 @@ language:
 tags:
 - fraud-detection
 - explainable-ai
-- xai
 - financial-ai
 - risk-scoring
 - trustworthy-ai
-- tabular-classification
+- synthetic-data
 - lead-ai
 pretty_name: Lead.AI Fraud Detection Table Data
 size_categories:
-- 1K<n<10K
+- n<1K
 ---
 
 # Lead.AI Fraud Detection Table Data
 
-The **Lead.AI Fraud Detection Table Data** dataset (`lead-ai-labs/fraud-detection-Table-data`) is a structured tabular benchmark dataset engineered for tabular classification, Explainable AI (XAI) experiments, risk scoring model training, and financial fraud detection prototyping.
+`lead-ai-labs/fraud-detection-Table-data` contains **105 synthetic transaction-style rows** for software smoke tests, schema demonstrations, classroom examples, and early fraud-classification prototypes.
 
----
+It contains no real customer records, payment credentials, card numbers, bank data, or personally identifiable information.
 
-## 📌 Dataset Summary
+## Important scope
 
-* **Dataset Name:** Lead.AI Fraud Detection Table Data
-* **Repository:** `lead-ai-labs/fraud-detection-Table-data`
-* **Publisher:** [Lead.AI Labs](https://huggingface.co/lead-ai-labs)
-* **Official Website:** [www.lead-ai.us](https://www.lead-ai.us)
-* **License:** Creative Commons Attribution 4.0 International (CC-BY-4.0)
-* **Task Category:** Tabular Classification
-* **Format:** CSV (`train.csv`)
-* **Size:** 105 realistic synthetic records
+This file is intentionally small. It is **not** a production training corpus, an independent research benchmark, or evidence of real-world fraud-model performance. A random train/test split of 105 closely structured synthetic rows can produce unstable or misleading results.
 
----
+For reproducible model evaluation, use the larger probabilistic generator and held-out protocol in the associated GitHub repository:
 
-## 💻 Python Quickstart (Hugging Face Datasets)
+```bash
+python scripts/train_and_evaluate.py \
+  --source synthetic \
+  --synthetic-rows 5000 \
+  --seed 42
+```
+
+## Dataset facts
+
+| Property | Value |
+|---|---|
+| File | `train.csv` |
+| Rows | 105 |
+| Format | CSV |
+| Target | `is_fraud` |
+| Labels | `0` legitimate-style, `1` fraud-style |
+| Data origin | Synthetic transaction-style examples |
+| Intended use | Smoke testing, education, prototyping |
+| License | CC BY 4.0 |
+
+Users should calculate the current class distribution directly from the file rather than assuming that it is balanced.
+
+## Load from Hugging Face
 
 ```python
 from datasets import load_dataset
 
-# Load dataset directly via Hugging Face Hub
 dataset = load_dataset("lead-ai-labs/fraud-detection-Table-data")
-print(dataset)
+df = dataset["train"].to_pandas()
 
-# Convert to Pandas DataFrame
-df = dataset['train'].to_pandas()
-print("Fraud Ratio:", df['is_fraud'].mean())
+print(df.shape)
+print(df["is_fraud"].value_counts(dropna=False))
+print(df.head())
 ```
 
----
+## Column schema
 
-## 🎯 Dataset Purpose
+| Column | Type | Description |
+|---|---|---|
+| `transaction_id` | string | Synthetic record identifier; exclude from model features |
+| `amount` | float | Transaction amount |
+| `transaction_hour` | integer | Hour from 0 to 23 |
+| `merchant_risk_score` | float | Synthetic merchant-risk signal |
+| `customer_age_days` | integer | Synthetic account tenure |
+| `device_trust_score` | float | Synthetic device-trust signal |
+| `location_risk_score` | float | Synthetic location-risk signal |
+| `velocity_24h` | integer | Synthetic recent-attempt count |
+| `previous_chargebacks` | integer | Synthetic prior-chargeback count |
+| `payment_method_risk` | float | Synthetic payment-method risk signal |
+| `is_fraud` | integer | Binary target |
 
-This dataset provides a balanced, noise-injected tabular environment designed specifically to benchmark binary classification models and explainability frameworks (SHAP, LIME, Feature Importance). It reflects common transactional, behavioral, and device risk signals encountered in online payment processing and e-commerce checkout systems.
+## Data provenance and caveats
 
----
+- The rows are synthetic and encode simplified relationships between transaction risk signals and labels.
+- The original 105-row file predates the reproducible probabilistic generator now included in the engineering repository; therefore, do not describe this file as empirically calibrated unless separate provenance evidence is added.
+- `transaction_id` is an identifier and should not be used as a predictive feature.
+- The dataset does not include protected attributes and cannot support a meaningful fairness audit.
+- Results from this file should be labeled as smoke-test or demonstration results.
+- Do not combine this dataset with unrelated Kaggle or Hugging Face datasets without documenting schema mapping, license compatibility, duplicate handling, leakage checks, and split strategy.
 
-## 🔬 Data Source & Creation Method
+## Responsible use
 
-* **Generation Strategy:** Algorithmic synthetic data generation using stochastic multivariate distributions calibrated against empirical financial fraud risk indicators.
-* **Correlations Included:**
-  * High transaction amount + low account age correlates positively with fraud risk.
-  * High velocity in 24 hours + high location risk correlates strongly with fraud risk.
-  * High device trust score + high customer account age correlates negatively with fraud risk.
+Appropriate uses include validating data loaders, testing UI flows, demonstrating feature schemas, and teaching binary classification. Unsupported uses include production fraud accusations, automated account blocking, credit decisions, compliance conclusions, or claims about real populations.
 
----
+## Related implementation
 
-## 📊 Column Schema
+The associated engineering repository provides:
 
-| Column Name | Data Type | Range / Options | Description |
-| :--- | :--- | :--- | :--- |
-| `transaction_id` | String | `TXN-1001`+ | Unique identifier for the transaction record |
-| `amount` | Float | `10.50` – `4850.00` | Transaction value in USD ($) |
-| `transaction_hour` | Integer | `0` – `23` | Hour of transaction attempt (24h format) |
-| `merchant_risk_score` | Float | `0.05` – `0.95` | Merchant category risk factor |
-| `customer_age_days` | Integer | `1` – `1825` | Account history duration in days |
-| `device_trust_score` | Float | `0.10` – `0.99` | Hardware/IP device fingerprint verification score |
-| `location_risk_score` | Float | `0.05` – `0.95` | Geographic/Proxy/VPN risk weighting |
-| `velocity_24h` | Integer | `1` – `28` | Number of transactions attempted in past 24 hours |
-| `previous_chargebacks` | Integer | `0` – `5` | Count of historical chargebacks recorded |
-| `payment_method_risk` | Float | `0.10` – `0.90` | Risk factor of chosen payment instrument |
-| `is_fraud` | Integer | `0` or `1` | **Target Label** (0 = Legitimate, 1 = Fraudulent) |
+- schema and leakage validation;
+- a reproducible synthetic generator;
+- cross-validated model selection;
+- train/validation/untouched-test evaluation;
+- Kaggle Community Benchmark tasks;
+- GitHub Actions quality gates; and
+- controlled Hugging Face publishing.
 
----
+See `BENCHMARKS.md` in `Arungharami/lead-ai-labs-hf-upgrade` for operating instructions.
 
-## 🛡️ Ethical Use & Responsible AI Notes
-
-> **IMPORTANT DATASET NOTE:**
-> This dataset is synthetic transaction-style data created for fraud detection experimentation, XAI demonstrations, and Lead.AI product prototyping. It does not contain real customer data, real card numbers, private banking data, or personally identifiable information.
-
----
-
-## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
-
-* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
-* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center & source code
-* 🤖 **Hugging Face Dataset Card:** [lead-ai-labs/fraud-detection-Table-data](https://huggingface.co/datasets/lead-ai-labs/fraud-detection-Table-data) — HF Tabular Dataset
-* 📊 **Kaggle Equivalent Dataset:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data) — Kaggle tabular benchmark package
-* 📓 **Kaggle Interactive Notebook:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo) — Executable Kaggle Jupyter demo
-
----
-
-## 🔗 Related Resources
-
-* 📊 **Kaggle Benchmark Dataset:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data)
-* 📓 **Kaggle Demo Kernel:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo)
-* 🤖 **Associated HF Model:** [lead-ai-labs/fraud-detection-xai](https://huggingface.co/lead-ai-labs/fraud-detection-xai)
-* 🖥️ **Live Space Demo:** [lead-ai-labs/lead-ai-fraud-shield-demo](https://huggingface.co/spaces/lead-ai-labs/lead-ai-fraud-shield-demo)
-* 💻 **GitHub Control Center:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
-* 🌐 **Official Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
-
----
-
-## 📄 Citation
+## Citation
 
 ```bibtex
-@dataset{lead_ai_table_data_2026,
+@dataset{gharami_lead_ai_fraud_table_data_2026,
   author = {Arun Kumar Gharami},
   title = {Lead.AI Fraud Detection Table Data},
   year = {2026},
-  publisher = {Hugging Face & Kaggle},
-  howpublished = {\url{https://huggingface.co/datasets/lead-ai-labs/fraud-detection-Table-data}}
+  publisher = {Lead.AI Labs},
+  url = {https://huggingface.co/datasets/lead-ai-labs/fraud-detection-Table-data}
 }
 ```

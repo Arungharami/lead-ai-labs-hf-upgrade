@@ -1,150 +1,199 @@
-# Lead.AI Fraud Shield — Explainable Fraud Detection XAI Model
-
-The **Lead.AI Fraud Shield XAI Model** (`lead-ai-labs/fraud-detection-xai`) is a specialized tabular classification model engineered for real-time transaction risk scoring and Explainable AI (XAI) feature attribution.
-
+---
+license: mit
+library_name: scikit-learn
+pipeline_tag: tabular-classification
+tags:
+- fraud-detection
+- financial-risk
+- tabular-classification
+- explainable-ai
+- synthetic-data
+- trustworthy-ai
+- lead-ai
 ---
 
-## 📌 Model Overview
+# Lead.AI Fraud Shield — Auditable Fraud-Risk Baseline
 
-* **Model Name:** Lead.AI Fraud Shield — Explainable Fraud Detection XAI Model
-* **Model Repository:** `lead-ai-labs/fraud-detection-xai`
-* **Organization:** [Lead.AI Labs](https://huggingface.co/lead-ai-labs)
-* **Official Website:** [www.lead-ai.us](https://www.lead-ai.us)
-* **Model Architecture:** Gradient Boosted Trees / Ensemble Tabular Classifier with SHAP/LIME Feature Attribution Support
-* **Primary Task:** Tabular Binary Classification (`0: Legitimate`, `1: Fraudulent`)
-* **Primary Domain:** Financial Risk Assessment, E-Commerce Payment Security, Fintech Automation
+`lead-ai-labs/fraud-detection-xai` is a reproducible scikit-learn baseline for binary transaction-fraud risk research. The release is built by the source-controlled pipeline in `Arungharami/lead-ai-labs-hf-upgrade` and is intended for research demonstrations, portfolio evidence, benchmarking, and controlled prototyping.
 
----
+It is **not** a production fraud service, a credit-scoring system, or an autonomous adverse-action system.
 
-## 📈 Synthetic Benchmark Performance Metrics
+## Verified release contents
 
-The model was evaluated against the synthetic tabular fraud benchmark dataset (`lead-ai-labs/fraud-detection-Table-data`):
+The protected publishing workflow uploads these files only after tests, quality gates, runtime checks, and checksum verification pass:
 
-| Evaluation Metric | Score | Target Threshold | Status |
-| :--- | :--- | :--- | :--- |
-| **Accuracy** | `94.2%` | >90.0% | ✅ Passed |
-| **Precision (Fraud Class)** | `91.8%` | >85.0% | ✅ Passed |
-| **Recall (Fraud Class)** | `89.5%` | >85.0% | ✅ Passed |
-| **F1-Score** | `90.6%` | >85.0% | ✅ Passed |
-| **ROC-AUC** | `0.963` | >0.900 | ✅ Passed |
+- `model.joblib` — fitted estimator, ordered features, operating threshold, candidate scores, and provenance metadata.
+- `metrics.json` — validation and untouched-test metrics.
+- `feature_schema.json` — required feature order, target values, and excluded identifier columns.
+- `runtime.json` — Python, operating-platform, and package versions used to build the artifact.
+- `SHA256SUMS.txt` — SHA-256 integrity values for the four generated artifacts.
+- `README.md` — this model card.
 
----
+A Hub page that contains only this card and not the five generated release files is documentation-only and must not be represented as a deployed trained model.
 
-## 💡 Business Problem & Value Proposition
+## Model-development process
 
-Modern payment platforms and e-commerce merchants lose billions annually to fraudulent transactions and chargebacks. Traditional rule-based engines miss subtle fraud patterns, while standard "black-box" machine learning models provide high accuracy but lack transparency—making it impossible for risk officers to explain *why* a legitimate transaction was flagged or declined.
+The pipeline evaluates two class-imbalance-aware candidates:
 
-**Lead.AI Fraud Shield** solves this by delivering high-precision risk scoring paired with instantaneous, human-readable feature impact explanations.
+1. Standardized logistic regression with balanced class weights.
+2. Random forest with balanced subsampling.
 
----
+Candidate selection uses out-of-fold precision-recall AUC on the training partition. The selected estimator is refitted on all training rows. The decision threshold is chosen on a separate validation partition to satisfy a requested minimum recall while maximizing precision. Final metrics are calculated once on an untouched test partition.
 
-## 📥 Input Features Schema
+For the reproducible CI benchmark below, balanced logistic regression was selected.
 
-The model accepts 9 key tabular features representing transactional, behavioral, and device parameters:
+## Reproducible synthetic benchmark
 
-| Feature Name | Data Type | Range / Options | Description |
-| :--- | :--- | :--- | :--- |
-| `amount` | Float | `$0.01` – `$10,000.00+` | Transaction value in USD |
-| `transaction_hour` | Integer | `0` – `23` | Hour of the day (24-hour format) |
-| `merchant_risk_score` | Float | `0.00` – `1.00` | Risk index of merchant category |
-| `customer_age_days` | Integer | `0` – `3,650+` | Customer account history duration in days |
-| `device_trust_score` | Float | `0.00` – `1.00` | Hardware fingerprint & IP trust score |
-| `location_risk_score` | Float | `0.00` – `1.00` | Geo-location anomaly / VPN risk index |
-| `velocity_24h` | Integer | `1` – `50+` | Transaction attempt count in last 24 hours |
-| `previous_chargebacks` | Integer | `0` – `10+` | Count of historical chargebacks recorded |
-| `payment_method_risk` | Float | `0.00` – `1.00` | Risk weighting of payment instrument |
+| Item | Value |
+|---|---:|
+| Generator | Lead.AI probabilistic synthetic transaction generator |
+| Rows | 5,000 |
+| Random seed | 42 |
+| Split | 60% train / 20% validation / 20% untouched test |
+| Test rows | 1,000 |
+| Test fraud prevalence | 8.3% |
+| Validation-selected threshold | 0.4928 |
+| Serialized runtime | Python 3.11 / scikit-learn 1.9.0 |
 
----
+### Untouched-test results
 
-## 💻 Python Quickstart & Code Example
+| Metric | Result |
+|---|---:|
+| PR-AUC | 0.5845 |
+| ROC-AUC | 0.9021 |
+| Balanced accuracy | 0.8147 |
+| Recall | 0.7952 |
+| Precision | 0.3028 |
+| F1 | 0.4385 |
+| Matthews correlation coefficient | 0.4206 |
+| Brier score | 0.1165 |
+| Expected calibration error | 0.1735 |
+| Recall at 1% maximum FPR | 0.3614 |
+| Confusion matrix | TN 765 / FP 152 / FN 17 / TP 66 |
 
-```python
-import pandas as pd
-import numpy as np
+These results measure a controlled **synthetic** benchmark, not real-world or institutional performance. The recall-oriented operating threshold intentionally accepts more false positives; organizations must choose thresholds using their own loss costs, review capacity, prevalence, and compliance requirements.
 
-# Define sample transaction input
-sample_transaction = pd.DataFrame([{
-    'amount': 1250.00,
-    'transaction_hour': 3,
-    'merchant_risk_score': 0.85,
-    'customer_age_days': 12,
-    'device_trust_score': 0.15,
-    'location_risk_score': 0.88,
-    'velocity_24h': 14,
-    'previous_chargebacks': 2,
-    'payment_method_risk': 0.80
-}])
+## Input schema
 
-print("Processing Lead.AI Fraud Shield Inference...")
-# Output: Risk Probability = 88.5%, Status = HIGH FRAUD RISK
+| Feature | Type | Meaning |
+|---|---|---|
+| `amount` | float | Transaction amount |
+| `transaction_hour` | integer, 0–23 | Local transaction hour |
+| `merchant_risk_score` | float, 0–1 | Merchant-category risk signal |
+| `customer_age_days` | integer | Account tenure in days |
+| `device_trust_score` | float, 0–1 | Device trust signal |
+| `location_risk_score` | float, 0–1 | Location anomaly signal |
+| `velocity_24h` | integer | Recent transaction-attempt count |
+| `previous_chargebacks` | integer | Prior chargeback count |
+| `payment_method_risk` | float, 0–1 | Payment-instrument risk signal |
+
+`transaction_id`, `id`, and `ID` are intentionally excluded from training to reduce identifier leakage.
+
+## Secure loading procedure
+
+`joblib` uses pickle-compatible serialization and can execute code during loading. Only load the model from a repository and immutable revision you trust. Verify the Hub security scan, pin a commit SHA, use the runtime recorded in `runtime.json`, and validate checksums before deserialization.
+
+```bash
+python -m pip install \
+  "joblib>=1.3,<2" \
+  "numpy>=1.26,<3" \
+  "pandas>=2.1,<3" \
+  "scikit-learn==1.9.0" \
+  huggingface_hub
 ```
 
----
+```python
+import hashlib
+import joblib
+import pandas as pd
+from huggingface_hub import hf_hub_download
 
-## 🔍 Explainability Approach (XAI)
+repo_id = "lead-ai-labs/fraud-detection-xai"
+revision = "PIN_A_TRUSTED_COMMIT_SHA"
 
-Unlike opaque neural networks, Lead.AI Fraud Shield utilizes additive feature attribution to decompose every output score:
+model_path = hf_hub_download(repo_id, "model.joblib", revision=revision)
+checksums_path = hf_hub_download(repo_id, "SHA256SUMS.txt", revision=revision)
 
-$$\text{Risk Score} = \text{Base Risk} + \sum_{i=1}^{n} \phi_i(\text{Feature}_i)$$
+expected = {}
+with open(checksums_path, encoding="utf-8") as handle:
+    for line in handle:
+        digest, filename = line.strip().split(maxsplit=1)
+        expected[filename] = digest
 
-Where $\phi_i$ represents the marginal risk contribution of feature $i$. Features such as high `velocity_24h` or elevated `merchant_risk_score` dynamically increase the risk score, while verified `device_trust_score` and long `customer_age_days` exert negative (safety) pressure on the risk estimate.
+actual = hashlib.sha256(open(model_path, "rb").read()).hexdigest()
+if actual != expected["model.joblib"]:
+    raise RuntimeError("Model checksum verification failed")
 
----
+bundle = joblib.load(model_path)
+record = pd.DataFrame([{
+    "amount": 1250.00,
+    "transaction_hour": 3,
+    "merchant_risk_score": 0.85,
+    "customer_age_days": 12,
+    "device_trust_score": 0.15,
+    "location_risk_score": 0.88,
+    "velocity_24h": 14,
+    "previous_chargebacks": 2,
+    "payment_method_risk": 0.80,
+}])
 
-## 🎯 Intended Use
+features = bundle["feature_names"]
+probability = float(bundle["estimator"].predict_proba(record[features])[:, 1][0])
+prediction = int(probability >= bundle["threshold"])
+print({"fraud_probability": probability, "prediction": prediction})
+```
 
-* Real-time risk evaluation for online transaction checkout APIs.
-* Risk scoring prototype for fintech proof-of-concept testing.
-* Interactive demo and educational benchtop for explainable AI in finance.
-* Benchmark baseline for tabular fraud detection research.
+## Explainability status
 
----
+The current release provides an auditable feature schema, transparent candidate selection, reproducible metrics, and a linear model when logistic regression wins. A packaged per-record SHAP or LIME explanation engine is **not yet part of the verified model bundle** and should not be claimed as an available artifact until implemented and tested.
 
-## 🚫 Not Intended Use
+## Intended uses
 
-* Fully autonomous account blocking or law enforcement reporting without human verification.
-* Direct credit scoring or loan eligibility determinations governed by FCRA/Equal Credit Opportunity acts.
-* Medical, legal, or non-financial tabular classification.
+- Reproducible fraud-classification research and teaching.
+- CI validation of a tabular ML pipeline.
+- Controlled product prototypes with human review.
+- Baseline comparison before training on properly licensed, representative data.
 
----
+## Prohibited or unsupported uses
 
-## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
+- Automatic accusations, account termination, or law-enforcement reporting.
+- Credit eligibility, lending, insurance pricing, or other regulated adverse decisions.
+- Deployment without local validation, monitoring, human review, and incident procedures.
+- Claims that synthetic results represent real customers or production traffic.
 
-* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
-* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center, model card schemas & code
-* 🤖 **Hugging Face Model Card:** [lead-ai-labs/fraud-detection-xai](https://huggingface.co/lead-ai-labs/fraud-detection-xai) — Open-weight model card & XAI specs
-* 📊 **Kaggle Benchmark Dataset:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data) — Kaggle benchmark dataset
-* 📓 **Kaggle Interactive Notebook:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo) — Executable Kaggle kernel demo
+## Limitations and required validation
 
----
+- Synthetic relationships may be easier, cleaner, or materially different from real fraud behavior.
+- Performance can change with prevalence, geography, merchant mix, device signals, and concept drift.
+- Calibration is not production-ready and must be reassessed on representative labels.
+- Fairness testing requires lawful, carefully governed evaluation data and is not supplied by this synthetic benchmark.
+- The small 105-row repository CSV is for smoke testing, not a defensible independent benchmark.
+- Joblib artifacts are tied to their recorded software runtime; cross-version loading is unsupported.
 
-## 🌐 Work With Lead.AI Labs
+## Reproduction
 
-Need a custom explainable fraud detection model trained on your proprietary enterprise data?
-* 🌐 **Visit Lead.AI Labs Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
-* 💻 **GitHub Engineering Repo:** [https://github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
-* 📊 **Kaggle Data Science Profile:** [https://www.kaggle.com/arungharami](https://www.kaggle.com/arungharami)
+```bash
+python -m pip install -e ".[dev]"
+pytest
+python scripts/train_and_evaluate.py \
+  --source synthetic \
+  --synthetic-rows 5000 \
+  --seed 42 \
+  --output-dir artifacts/fraud-detection-xai
+cd artifacts/fraud-detection-xai
+sha256sum --check SHA256SUMS.txt
+```
 
----
+See `BENCHMARKS.md` in the engineering repository for Kaggle Benchmarks and Hugging Face publishing procedures.
 
-## ⚠️ Limitations & Responsible AI Disclaimer
-
-> **IMPORTANT RESPONSIBLE AI DISCLAIMER:**
-> This model is a prototype/demo system for research, education, portfolio, and product development. It should not be used as the only basis for real fraud accusations, account blocking, credit decisions, or financial compliance decisions without validation, monitoring, and human review.
->
-> All training data and demo inputs utilize synthetic data. Lead.AI Labs assumes no liability for direct or indirect operational decisions made using this open demo model.
-
----
-
-## 📄 Citation
+## Citation
 
 ```bibtex
-@misc{lead_ai_fraud_shield_2026,
+@software{gharami_lead_ai_fraud_shield_2026,
   author = {Arun Kumar Gharami},
-  title = {Lead.AI Fraud Shield: Explainable Fraud Detection XAI Model},
+  title = {Lead.AI Fraud Shield: Auditable Fraud-Risk Baseline},
   year = {2026},
-  publisher = {Hugging Face & Kaggle},
-  journal = {Hugging Face Model Hub & Kaggle Code},
-  howpublished = {\url{https://huggingface.co/lead-ai-labs/fraud-detection-xai}}
+  publisher = {Lead.AI Labs},
+  url = {https://github.com/Arungharami/lead-ai-labs-hf-upgrade}
 }
 ```
