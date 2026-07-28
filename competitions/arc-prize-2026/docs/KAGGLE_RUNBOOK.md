@@ -1,17 +1,14 @@
 # Kaggle Execution Runbook
 
-This runbook converts the repository agent into a valid ARC Prize 2026 Kaggle notebook using the official starter project.
+This runbook converts `lead-ai-symbolic-v2` into a private ARC Prize 2026 Kaggle notebook through the pinned official starter.
 
-## 1. One-time requirements
+## Requirements
 
 - Python 3.12
-- Git
-- Make
+- Git and GNU Make
 - Kaggle account
-- ARC Prize 2026 rules accepted on Kaggle
-- Kaggle API token generated from Kaggle Settings
-
-Verify tools:
+- ARC Prize 2026 competition rules accepted
+- private Kaggle API token
 
 ```bash
 python3.12 --version
@@ -19,70 +16,60 @@ git --version
 make --version
 ```
 
-## 2. Enter the project
+## Enter the project
 
 ```bash
 cd competitions/arc-prize-2026
+python3.12 -m pip install -e '.[dev]'
 ```
 
-## 3. Bootstrap the official starter
+## Repository quality gates
 
 ```bash
-make bootstrap
+make ci
 ```
 
-This clones the official repository into:
+The current release requires 26 tests, at least 85% branch-aware coverage, lint, formatting, compilation, shell syntax, metadata, agent-contract, and secret checks.
 
-```text
-.runtime/ARC-AGI-3-Kaggle-Starter
-```
-
-The runtime directory is ignored by Git. The bootstrap also copies the Lead.AI agent and Arun's Kaggle notebook metadata into the starter.
-
-## 4. Add the Kaggle token securely
-
-```bash
-mkdir -p .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle
-printf '%s' 'KGAT_REPLACE_WITH_YOUR_TOKEN' > \
-  .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
-chmod 600 .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
-```
-
-Never paste the token into source code, a notebook cell, an issue, or a commit.
-
-## 5. Install the official environment
+## Build the pinned official runtime
 
 ```bash
 make setup
 ```
 
-The official starter creates its Python 3.12 environment, installs the ARC packages and Kaggle CLI, and prepares the agent framework.
+This checks out the official starter and agent framework revisions recorded in `config/runtime-lock.env`, installs the locked ARC and Kaggle packages, synchronizes the Lead.AI agent and metadata, and runs preflight checks.
 
-## 6. Run repository tests
-
-```bash
-python3.12 -m pip install -e '.[dev]'
-make test
-```
-
-Expected result for the current baseline:
+Runtime location:
 
 ```text
-7 passed
+.runtime/ARC-AGI-3-Kaggle-Starter
 ```
 
-## 7. Run official ARC verification
+## Store the Kaggle token securely
 
-Fast smoke test:
+Use your real token only in the ignored runtime file. The placeholder below intentionally does not resemble a real token.
+
+```bash
+mkdir -p .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle
+printf '%s' 'YOUR_PRIVATE_KAGGLE_TOKEN' > \
+  .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
+chmod 600 .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
+```
+
+Validate without displaying it:
+
+```bash
+python3.12 scripts/preflight.py --require-token
+```
+
+Never place a token in source code, notebook cells, issues, email, chat, or commits.
+
+## Official local verification
+
+Quick smoke test:
 
 ```bash
 make verify
-```
-
-Full local run:
-
-```bash
-make play
 ```
 
 Single-game debugging:
@@ -91,101 +78,102 @@ Single-game debugging:
 make play-game GAME=ls20
 ```
 
-Do not proceed to an official submission if the agent crashes, creates invalid actions, or fails the official smoke test.
+Full public-game run:
 
-## 8. Build the generated notebook locally
+```bash
+make play
+```
+
+Do not submit if the agent crashes, creates invalid actions, hangs, or fails the official smoke test. A zero score with a clean run is a valid baseline and must be recorded honestly.
+
+## Build the private notebook
 
 ```bash
 make notebook
 ```
 
-Inspect the generated notebook under the official runtime. Confirm:
+Confirm that the generated notebook:
 
-- the notebook imports successfully;
-- `MyAgent` is present;
-- the Kaggle username is `arungharami`;
-- the competition source is `arc-prize-2026-arc-agi-3`;
-- internet is disabled;
-- no token appears in notebook source or output;
-- the intended accelerator is selected.
+- contains `MyAgent`;
+- produces `submission.parquet`;
+- uses kernel ID `arungharami/lead-ai-arc-prize-2026-agent-v2`;
+- attaches the ARC competition source;
+- is private;
+- disables internet;
+- uses the locked accelerator;
+- contains no credential.
 
-## 9. Push a Kaggle notebook run
+## Push a Kaggle notebook version
 
 ```bash
 make submit
 make status
 ```
 
-`make submit` uploads and runs the generated notebook. It does not complete the final competition submission by itself.
+`make submit` pushes a private kernel version. It does not spend an official competition submission by itself.
 
-## 10. Complete the deliberate Kaggle submission step
+## Complete the final Kaggle UI step
 
-After `make status` reports completion:
+After the run reports completion:
 
-1. Open the generated notebook version on Kaggle.
-2. Review the run output for exceptions or timeouts.
+1. Open the private notebook version on Kaggle.
+2. Review output for exceptions, timeouts, memory errors, and early termination.
 3. Select **Submit to Competition**.
-4. Choose the generated `submission.parquet` output.
-5. Record the notebook version, experiment ID, timestamp, and score in `docs/EXPERIMENT_LOG.md`.
+4. Choose `submission.parquet`.
+5. Record experiment ID, Git commit, notebook version, runtime, accelerator, and score in `docs/EXPERIMENT_LOG.md`.
 
-The official starter documentation states that five official competition submissions are available per day. Treat each one as an experiment, not a guess.
+## GitHub Actions option
 
-## 11. Accelerator policy
+The `Publish ARC to Kaggle` workflow can publish the public synthetic trace-schema dataset automatically when repository secret `KAGGLE_API_TOKEN` is configured.
 
-Start with the default T4 setting only after the CPU-compatible baseline is valid. Use larger accelerators only when a measured model requires them.
+A manual workflow run with `publish_competition_kernel=true` can also build and push the private kernel. The final **Submit to Competition** action remains manual.
 
-| Accelerator | Intended use |
+## Accelerator policy
+
+| Accelerator | Use |
 |---|---|
-| CPU | symbolic policies and pipeline validation |
-| T4 | small local models and normal iteration |
-| P100 | single-GPU memory needs |
-| RTX 6000 | heavy ARC-AGI-3 model experiments after profiling |
+| CPU | symbolic agent, validation, and default release |
+| T4 | measured small-model experiments |
+| P100 | measured single-GPU memory requirement |
+| RTX 6000 | profiled heavy experiments only |
 
-All accelerated Kaggle sessions are expected to run without internet. Attach required open model weights through supported Kaggle sources and preserve license information.
+Do not request GPU merely because it is available. The competition host has reported many failed submissions caused by a GPU-dependent notebook being submitted without matching hardware configuration.
 
-## 12. Failure recovery
+## Common failures
 
-### Python 3.12 not found
+### Authentication failure
 
-Install Python 3.12 and rerun `make setup`.
+Regenerate the Kaggle token, replace only the ignored runtime file, enforce mode `600`, and rerun preflight.
 
-### Kaggle 401 or unauthorized error
+### Competition permission failure
 
-Generate a fresh Kaggle API token, replace the local ignored token file, and rerun. Do not commit the token.
+Open Kaggle and accept the current competition rules with the same account used by the token.
 
-### Metadata error
+### Missing dependency or dataset
 
-Verify `notebooks/kernel-metadata.json` contains:
+Return to the pinned starter, rerun `make setup`, and confirm the official competition source is attached.
 
-```text
-arungharami/lead-ai-arc-prize-2026-agent-v1
-```
+### Timeout or apparent early completion
 
-Then rerun `make submit`.
+Inspect loops, reset behavior, async calls, action limits, and gateway configuration. Do not infer success from a short runtime.
 
-### Local environment cannot download a game initially
+### CUDA out of memory
 
-Confirm internet access for the first local setup. After environment assets are cached, local play can continue offline.
+Reduce model size, token budget, visual history, parallelism, or accelerator demand. Record peak memory before trying another submission.
 
-### Local score is zero
+### Read-only path error
 
-A valid zero score means the pipeline is working but the policy has not solved a level. Record the result as a baseline; do not misrepresent it as success.
+Write generated files only under `/kaggle/working` or `/tmp`, never `/kaggle/input`.
 
-### Submission times out or runs out of memory
+## Release checklist
 
-Reduce model size, context, visual history, reflection frequency, or accelerator requirements. Record peak memory and latency before resubmitting.
-
-## 13. Release checklist
-
-Before the September milestone or November final submission:
-
-- [ ] Current competition rules re-read and accepted.
-- [ ] Best commit tagged.
-- [ ] Tests and official local verification pass.
-- [ ] Full game run recorded.
-- [ ] Experiment table complete.
-- [ ] Model and dataset licenses documented.
-- [ ] Reproduction commands tested from a clean clone.
-- [ ] Secrets audit complete.
-- [ ] Open-source package and technical report prepared.
-- [ ] Kaggle submission manually confirmed.
+- [ ] Current rules accepted.
+- [ ] `make ci` passes.
+- [ ] Runtime-smoke workflow passes.
+- [ ] `make verify` passes.
+- [ ] Full public-game run is recorded.
+- [ ] Best commit and notebook version are pinned.
+- [ ] Dataset/model licenses and revisions are recorded.
+- [ ] Secret scan passes.
+- [ ] Kaggle run output is reviewed.
+- [ ] Final competition submission is manually confirmed.
