@@ -7,13 +7,15 @@
 
 This repository is the engineering source of truth for the Lead.AI Fraud Shield research baseline and its GitHub, Hugging Face, and Kaggle assets.
 
-It now includes a reproducible tabular model pipeline, held-out evaluation, objective Kaggle Community Benchmark tasks, automated quality gates, and controlled Hugging Face publishing. It also retains earlier dataset cards, demo assets, notebooks, and portfolio materials.
+It includes a reproducible tabular model pipeline, held-out evaluation, objective Kaggle Community Benchmark tasks, automated quality gates, artifact integrity checks, and controlled Hugging Face publishing. It also retains the associated dataset cards, demo assets, notebooks, and portfolio materials.
 
 ## Verified status
 
-- **GitHub implementation:** merged and CI-tested.
+- **GitHub implementation:** merged, pull-request reviewed, and CI-tested.
 - **Model training:** balanced logistic regression and random forest candidates selected by out-of-fold PR-AUC.
 - **Evaluation:** train, validation, and untouched-test partitions; threshold selected on validation only.
+- **Runtime:** Python 3.11 with scikit-learn 1.9.0 pinned for model-bundle portability.
+- **Artifact integrity:** runtime provenance and SHA-256 checksums generated for every release.
 - **Kaggle Benchmarks:** structured fraud-risk reasoning task with objective assertions and audited cases.
 - **Hugging Face publishing:** protected manual workflow requiring a write-scoped `HF_TOKEN`.
 - **105-row CSV:** synthetic smoke-test data only; not a production corpus or independent benchmark.
@@ -48,7 +50,7 @@ lead-ai-labs-hf-upgrade/
 ├── datasets/                           # Synthetic dataset cards and CSV assets
 ├── spaces/                             # Gradio demo source
 ├── .github/workflows/
-│   ├── benchmark-ci.yml                # Test, train, gate and upload CI artifact
+│   ├── benchmark-ci.yml                # Test, train, verify and upload CI artifact
 │   └── publish-huggingface.yml         # Protected verified Hub release
 ├── BENCHMARKS.md                       # Complete benchmark operating guide
 ├── upload_commands.md                  # Current `hf` CLI commands
@@ -57,7 +59,7 @@ lead-ai-labs-hf-upgrade/
 
 ## Local quickstart
 
-Python 3.11 or newer is required.
+Python 3.11 or newer is required. The project pins scikit-learn 1.9.0 because joblib model bundles are not guaranteed to be portable across scikit-learn versions.
 
 ```bash
 python -m pip install -e ".[dev]"
@@ -69,11 +71,20 @@ python scripts/train_and_evaluate.py \
   --output-dir artifacts/fraud-detection-xai
 ```
 
-Generated files:
+Generated release files:
 
-- `model.joblib`
-- `metrics.json`
-- `feature_schema.json`
+- `model.joblib` — fitted estimator and metadata bundle.
+- `metrics.json` — validation and untouched-test report.
+- `feature_schema.json` — ordered feature contract and target metadata.
+- `runtime.json` — Python, platform, and package versions.
+- `SHA256SUMS.txt` — integrity checks for the four generated artifacts.
+
+Verify artifact integrity:
+
+```bash
+cd artifacts/fraud-detection-xai
+sha256sum --check SHA256SUMS.txt
+```
 
 ## Supported data inputs
 
@@ -91,6 +102,8 @@ python scripts/train_and_evaluate.py \
 ```
 
 Third-party Kaggle or Hugging Face datasets should remain under their own licenses. Do not copy or merge unrelated data blindly. Add a documented adapter, confirm license compatibility, remove duplicate leakage, and preserve an untouched test set.
+
+The protected public-release workflow intentionally does not publish a model trained on the 105-row smoke-test CSV.
 
 ## Kaggle Community Benchmark
 
@@ -114,6 +127,8 @@ Use `kaggle benchmarks --help` and `kaggle benchmarks tasks --help` for the exac
 
 The preferred release path is GitHub Actions: **Publish Verified Model to Hugging Face**. Add `HF_TOKEN` to the protected `huggingface-production` environment, then run the workflow manually.
 
+The workflow reruns tests, retrains the candidate, verifies the pinned runtime, enforces minimum quality and latency gates, checks SHA-256 integrity, stores an immutable GitHub artifact, and only then uploads to Hugging Face.
+
 Current local CLI flow:
 
 ```bash
@@ -125,7 +140,7 @@ hf upload lead-ai-labs/fraud-detection-xai artifacts/fraud-detection-xai . --typ
 hf upload lead-ai-labs/fraud-detection-xai models/fraud-detection-xai/README.md README.md --type model
 ```
 
-Only describe the Hub repository as a trained model release after `model.joblib`, `metrics.json`, and `feature_schema.json` are present.
+Only describe the Hub repository as a trained model release after `model.joblib`, `metrics.json`, `feature_schema.json`, `runtime.json`, and `SHA256SUMS.txt` are present and verified.
 
 ## Responsible use
 
