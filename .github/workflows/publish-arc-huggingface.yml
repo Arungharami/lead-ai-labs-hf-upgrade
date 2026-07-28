@@ -1,6 +1,14 @@
 name: Publish ARC to Hugging Face
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "competitions/arc-prize-2026/agent/my_agent.py"
+      - "competitions/arc-prize-2026/config/runtime-lock.env"
+      - "competitions/arc-prize-2026/docs/PRODUCTION_READINESS.md"
+      - "competitions/arc-prize-2026/publish/huggingface/**"
+      - ".github/workflows/publish-arc-huggingface.yml"
   workflow_dispatch:
 
 permissions:
