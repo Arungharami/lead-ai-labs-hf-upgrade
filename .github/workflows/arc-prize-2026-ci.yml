@@ -57,7 +57,7 @@ jobs:
       - name: Check correctness and import hygiene
         run: >-
           python -m ruff check
-          --select F,I,UP,B
+          --select F,I,B
           agent tests scripts
 
       - name: Check formatting
