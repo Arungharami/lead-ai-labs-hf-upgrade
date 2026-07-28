@@ -57,9 +57,21 @@ Contains the exact 11-column tabular schema as `lead-ai-labs/fraud-detection-Tab
 
 ---
 
+## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
+
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center & source code
+* 🤖 **Hugging Face Sample Dataset:** [lead-ai-labs/fraud-detection-sample-data](https://huggingface.co/datasets/lead-ai-labs/fraud-detection-sample-data) — HF Tabular Sample Dataset
+* 📊 **Kaggle Equivalent Dataset:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-sample-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-sample-data) — Kaggle tabular sample dataset package
+* 📓 **Kaggle Interactive Notebook:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo) — Executable Kaggle Jupyter demo
+
+---
+
 ## 🔗 Related Resources
 
-* 📂 **Full Training Dataset:** [lead-ai-labs/fraud-detection-Table-data](https://huggingface.co/datasets/lead-ai-labs/fraud-detection-Table-data)
-* 🤖 **Associated Model:** [lead-ai-labs/fraud-detection-xai](https://huggingface.co/lead-ai-labs/fraud-detection-xai)
+* 📋 **Kaggle Sample Dataset:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-sample-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-sample-data)
+* 📊 **Full HF Training Dataset:** [lead-ai-labs/fraud-detection-Table-data](https://huggingface.co/datasets/lead-ai-labs/fraud-detection-Table-data)
+* 🤖 **Associated HF Model:** [lead-ai-labs/fraud-detection-xai](https://huggingface.co/lead-ai-labs/fraud-detection-xai)
 * 🖥️ **Live Space Demo:** [lead-ai-labs/lead-ai-fraud-shield-demo](https://huggingface.co/spaces/lead-ai-labs/lead-ai-fraud-shield-demo)
+* 💻 **GitHub Control Center:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
 * 🌐 **Official Website:** [https://www.lead-ai.us](https://www.lead-ai.us)

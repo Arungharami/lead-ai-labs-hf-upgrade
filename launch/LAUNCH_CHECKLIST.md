@@ -1,6 +1,15 @@
 # Lead.AI Labs — Hugging Face & Kaggle Launch Checklist
 
-This checklist tracks quality assurance, multi-platform sync, and deployment verification for **Lead.AI Labs**.
+This checklist tracks quality assurance, multi-platform sync, and deployment verification for **Lead.AI Labs** ([www.lead-ai.us](https://www.lead-ai.us)), managed via the [GitHub Control Center](https://github.com/Arungharami/lead-ai-labs-hf-upgrade).
+
+---
+
+## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
+
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions & consultation
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Upgrade control center & code
+* 🤖 **Hugging Face Hub:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs) — Models, datasets & Gradio space demo
+* 📊 **Kaggle Data Science Hub:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami) — Benchmark datasets & notebook showcase
 
 ---
 
@@ -42,5 +51,6 @@ This checklist tracks quality assurance, multi-platform sync, and deployment ver
 - [ ] **9. Founder LinkedIn Launch Post Published**
   - Posted announcement using template in `launch/LINKEDIN_POST.md` (including Kaggle links).
 
-- [ ] **10. Lead.AI Contact CTA Tested**
-  - Tested consultation booking flow on `www.lead-ai.us`.
+- [ ] **10. 4-Pillar Bridge Verification**
+  - Verified bidirectional links across `www.lead-ai.us` ↔ GitHub ↔ Hugging Face ↔ Kaggle.
+

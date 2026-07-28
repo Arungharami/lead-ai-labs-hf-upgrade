@@ -262,11 +262,11 @@ with gr.Blocks(theme=theme, css=custom_css, title="Lead.AI Fraud Shield — Expl
     gr.Markdown(
         """
         ---
-        ### 🌐 Integrate Lead.AI Fraud Shield into Your Enterprise Platform
-        Need custom explainable fraud models fine-tuned on your proprietary data?
-        * 🔗 **Official Website:** [www.lead-ai.us](https://www.lead-ai.us)
-        * 💻 **GitHub Control Center:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
-        * 📂 **Hugging Face Organization:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+        ### 🌉 The 4-Pillar Lead.AI Ecosystem Bridge
+        * 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
+        * 💻 **GitHub Control Center:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central engineering code & CLI sync scripts
+        * 🤖 **Hugging Face Hub:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs) — Open models, datasets & live Gradio demos
+        * 📊 **Kaggle Data Science Hub:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami) — Benchmark kernels, Kaggle datasets & notebook EDA showcase
         
         *Disclaimer: Synthetic benchmark demonstration model for research, education, and prototyping. No real customer banking or financial PII data is stored or processed.*
         """

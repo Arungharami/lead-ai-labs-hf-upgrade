@@ -108,10 +108,22 @@ Where $\phi_i$ represents the marginal risk contribution of feature $i$. Feature
 
 ---
 
+## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
+
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center, model card schemas & code
+* 🤖 **Hugging Face Model Card:** [lead-ai-labs/fraud-detection-xai](https://huggingface.co/lead-ai-labs/fraud-detection-xai) — Open-weight model card & XAI specs
+* 📊 **Kaggle Benchmark Dataset:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data) — Kaggle benchmark dataset
+* 📓 **Kaggle Interactive Notebook:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo) — Executable Kaggle kernel demo
+
+---
+
 ## 🌐 Work With Lead.AI Labs
 
 Need a custom explainable fraud detection model trained on your proprietary enterprise data?
-👉 **Visit Lead.AI Labs:** [https://www.lead-ai.us](https://www.lead-ai.us)
+* 🌐 **Visit Lead.AI Labs Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
+* 💻 **GitHub Engineering Repo:** [https://github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
+* 📊 **Kaggle Data Science Profile:** [https://www.kaggle.com/arungharami](https://www.kaggle.com/arungharami)
 
 ---
 
@@ -131,8 +143,8 @@ Need a custom explainable fraud detection model trained on your proprietary ente
   author = {Arun Kumar Gharami},
   title = {Lead.AI Fraud Shield: Explainable Fraud Detection XAI Model},
   year = {2026},
-  publisher = {Hugging Face},
-  journal = {Hugging Face Model Hub},
+  publisher = {Hugging Face & Kaggle},
+  journal = {Hugging Face Model Hub & Kaggle Code},
   howpublished = {\url{https://huggingface.co/lead-ai-labs/fraud-detection-xai}}
 }
 ```

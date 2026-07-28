@@ -1,14 +1,28 @@
 # Lead.AI Labs — Hugging Face & Kaggle Upgrade Executive Summary
 
+[![Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
+[![GitHub](https://img.shields.io/badge/GitHub-lead--ai--labs--hf--upgrade-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
+[![Kaggle Profile](https://img.shields.io/badge/Kaggle-arungharami-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/arungharami)
+
 This document summarizes the complete build, asset updates, Kaggle CLI bridge integration, operational next steps, and strategic business positioning established by the **Lead.AI Labs Upgrade Control Center**.
+
+---
+
+## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
+
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center & source code
+* 🤖 **Hugging Face Hub:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs) — Open models, datasets & live Gradio web demos
+* 📊 **Kaggle Data Science Hub:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami) — Benchmark kernels, Kaggle datasets & notebook showcase
 
 ---
 
 ## 📦 What Was Created & Integrated
 
-A complete, 25-file multi-platform AI portfolio control center in `/Users/arun/Documents/Lead-ai-labs-hf-upgrade/lead-ai-labs-hf-upgrade`:
+A complete, multi-platform AI portfolio control center in `/Users/arun/Documents/Lead-ai-labs-hf-upgrade/lead-ai-labs-hf-upgrade`:
 
-1. **`README.md`**: Master upgrade dashboard, asset directory, multi-platform funnel architecture, and step-by-step workflow.
+1. **`README.md`**: Master upgrade dashboard, asset directory, multi-platform funnel architecture, and 4-pillar bridge.
 2. **`BRAND_GUIDE.md`**: Official brand identity, tone of voice, visual direction, SEO terms, and Responsible AI guidelines.
 3. **`PLATFORM_STRATEGY.md`**: Strategic conversion funnel mapping `www.lead-ai.us` ↔ GitHub ↔ Hugging Face ↔ Kaggle ↔ Space Demos.
 4. **`org-card/README.md`**: Markdown content for the official Lead.AI Labs Hugging Face Organization profile card.
@@ -32,6 +46,8 @@ A complete, 25-file multi-platform AI portfolio control center in `/Users/arun/D
 
 ## 🎯 What Platforms & Assets This Updates
 
+* **Official Website:** Connects [www.lead-ai.us](https://www.lead-ai.us) to open science assets across GitHub, Hugging Face, and Kaggle.
+* **GitHub Control Center:** Links [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) to all 4 pillars.
 * **Hugging Face Org Profile:** Updates `https://huggingface.co/lead-ai-labs` with a structured organization card.
 * **Hugging Face Model Hub:** Updates `https://huggingface.co/lead-ai-labs/fraud-detection-xai` model card with XAI explainability metrics and code snippets.
 * **Hugging Face Datasets Hub:** Enables tabular previews for `fraud-detection-Table-data` and `fraud-detection-sample-data`.
@@ -51,15 +67,6 @@ A complete, 25-file multi-platform AI portfolio control center in `/Users/arun/D
 
 ---
 
-## 🚀 How This Supports Lead.AI Labs
-
-* **Establishes Multi-Platform Credibility:** Demonstrates real open-source AI engineering across GitHub, Hugging Face, and Kaggle.
-* **Drives Inbound Data Science Discovery:** Captures data scientists on Kaggle and ML engineers on Hugging Face.
-* **Accelerates Sales Cycles:** The live Gradio demo and Kaggle EDA notebook allow prospective clients to experience Lead.AI's XAI explainability instantly without installation.
-* **Creates High-Converting Funnel:** Connects public open-science assets directly back to service inquiries and consultation bookings at [www.lead-ai.us](https://www.lead-ai.us).
-
----
-
 ## 🏆 Final Business Positioning Statement
 
-> **Lead.AI Labs is a professional AI automation and trustworthy machine learning company building explainable fraud detection, predictive analytics, customer intelligence, and decision-support systems. Its Hugging Face organization and Kaggle data science showcase demonstrate real AI product engineering through models, datasets, demos, benchmark kernels, and documentation connected to www.lead-ai.us and GitHub.**
+> **Lead.AI Labs is a professional AI automation and trustworthy machine learning company building explainable fraud detection, predictive analytics, customer intelligence, and decision-support systems. Its Hugging Face organization, Kaggle data science showcase, and GitHub control center demonstrate real AI product engineering through models, datasets, demos, benchmark kernels, and documentation connected directly to www.lead-ai.us.**

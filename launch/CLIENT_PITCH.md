@@ -62,7 +62,7 @@ Modern companies cannot afford to rely on opaque, "black-box" artificial intelli
 
 Ready to transform your risk engineering and business automation with Explainable AI?
 
-* 🌐 **Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
-* 📧 **Direct Contact:** [https://www.lead-ai.us](https://www.lead-ai.us)
-* 📂 **Hugging Face Portfolio:** [https://huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* 🌐 **Official Business Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
+* 💻 **GitHub Control Center:** [https://github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
+* 🤖 **Hugging Face Portfolio:** [https://huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
 * 📊 **Kaggle Profile:** [https://www.kaggle.com/arungharami](https://www.kaggle.com/arungharami)

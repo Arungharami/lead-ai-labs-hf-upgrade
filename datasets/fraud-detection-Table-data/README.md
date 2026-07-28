@@ -94,10 +94,23 @@ This dataset provides a balanced, noise-injected tabular environment designed sp
 
 ---
 
+## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
+
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center & source code
+* 🤖 **Hugging Face Dataset Card:** [lead-ai-labs/fraud-detection-Table-data](https://huggingface.co/datasets/lead-ai-labs/fraud-detection-Table-data) — HF Tabular Dataset
+* 📊 **Kaggle Equivalent Dataset:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data) — Kaggle tabular benchmark package
+* 📓 **Kaggle Interactive Notebook:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo) — Executable Kaggle Jupyter demo
+
+---
+
 ## 🔗 Related Resources
 
-* 🤖 **Associated Model:** [lead-ai-labs/fraud-detection-xai](https://huggingface.co/lead-ai-labs/fraud-detection-xai)
+* 📊 **Kaggle Benchmark Dataset:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data)
+* 📓 **Kaggle Demo Kernel:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo)
+* 🤖 **Associated HF Model:** [lead-ai-labs/fraud-detection-xai](https://huggingface.co/lead-ai-labs/fraud-detection-xai)
 * 🖥️ **Live Space Demo:** [lead-ai-labs/lead-ai-fraud-shield-demo](https://huggingface.co/spaces/lead-ai-labs/lead-ai-fraud-shield-demo)
+* 💻 **GitHub Control Center:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
 * 🌐 **Official Website:** [https://www.lead-ai.us](https://www.lead-ai.us)
 
 ---
@@ -109,7 +122,7 @@ This dataset provides a balanced, noise-injected tabular environment designed sp
   author = {Arun Kumar Gharami},
   title = {Lead.AI Fraud Detection Table Data},
   year = {2026},
-  publisher = {Hugging Face},
+  publisher = {Hugging Face & Kaggle},
   howpublished = {\url{https://huggingface.co/datasets/lead-ai-labs/fraud-detection-Table-data}}
 }
 ```

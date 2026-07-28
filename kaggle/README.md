@@ -1,27 +1,33 @@
 # Lead.AI Labs — Kaggle CLI Bridge Architecture
 
+[![Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
+[![GitHub](https://img.shields.io/badge/GitHub-lead--ai--labs--hf--upgrade-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
+[![Kaggle Profile](https://img.shields.io/badge/Kaggle-arungharami-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/arungharami)
+
 This directory houses the **Kaggle CLI Bridge** for **Lead.AI Labs** ([www.lead-ai.us](https://www.lead-ai.us)), enabling automated publishing, versioning, and management of public data science assets and interactive notebooks on Kaggle ([kaggle.com/arungharami](https://www.kaggle.com/arungharami)).
 
 ---
 
-## 🏛️ Strategic Positioning & Ecosystem Role
+## 🌉 The 4-Pillar Multi-Platform Ecosystem Bridge
 
-> **Kaggle Positioning:** Kaggle serves as the public data-science showcase layer for Lead.AI Labs. While Hugging Face hosts AI model weights, dataset cards, and live Gradio Space demos, and GitHub hosts core engineering source code, Kaggle hosts notebook-style exploratory data analysis (EDA), benchmark kernel runs, and dataset discovery—with [www.lead-ai.us](https://www.lead-ai.us) acting as the final enterprise client conversion hub.
-
+```text
+                        [ www.lead-ai.us ]
+        (Official Business Website & Enterprise Conversion Hub)
+                                ▲
+            ┌───────────────────┼───────────────────┐
+            │                   │                   │
+            ▼                   ▼                   ▼
+ [ GitHub Control Center ] ◄► [ Hugging Face ] ◄► [ Kaggle Data Science ]
+  Engineering Proof & Code    Models, Datasets &   Benchmark Kernels & 
+  (Arungharami/lead-ai-       Interactive Space    Interactive EDA Notebooks
+     labs-hf-upgrade)         Demos (lead-ai-labs)    (arungharami)
 ```
-THE 4-PLATFORM PRODUCT ECOSYSTEM
 
-  [ www.lead-ai.us ] ◄── Enterprise Client Conversion & Service Packages
-         ▲
-         │
-  [ GitHub Control Center ] ◄── Engineering Proof & Architecture Source
-         ▲
-         │
-  [ Hugging Face Hub ] ◄── Open Models, Datasets & Interactive Space Demos
-         ▲
-         │
-  [ Kaggle Data Science Bridge ] ◄── Benchmark Kernels & Notebook EDA
-```
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us) — Enterprise AI solutions, custom risk modeling & consultation
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade) — Central upgrade control center, source code & CLI sync scripts
+* 🤖 **Hugging Face Hub:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs) — Open-weight XAI models, tabular datasets & live Gradio web demos
+* 📊 **Kaggle Data Science Hub:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami) — Benchmark kernels, Kaggle datasets & interactive exploratory notebook analysis
 
 ---
 
@@ -43,10 +49,14 @@ THE 4-PLATFORM PRODUCT ECOSYSTEM
 
 ---
 
-## 🔗 Cross-Platform Asset Mapping
+## 🔗 Cross-Platform Asset Mapping Directory
 
-* **Kaggle Profile:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami)
-* **Kaggle Dataset 1:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data)
-* **Kaggle Dataset 2:** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-sample-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-sample-data)
-* **Kaggle Demo Notebook:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo)
-* **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us)
+* 🌐 **Official Business Website:** [www.lead-ai.us](https://www.lead-ai.us)
+* 💻 **GitHub Engineering Repo:** [github.com/Arungharami/lead-ai-labs-hf-upgrade](https://github.com/Arungharami/lead-ai-labs-hf-upgrade)
+* 🤖 **Hugging Face Organization:** [huggingface.co/lead-ai-labs](https://huggingface.co/lead-ai-labs)
+* 🤖 **Hugging Face XAI Model:** [huggingface.co/lead-ai-labs/fraud-detection-xai](https://huggingface.co/lead-ai-labs/fraud-detection-xai)
+* 🖥️ **Hugging Face Live Gradio Demo:** [huggingface.co/spaces/lead-ai-labs/lead-ai-fraud-shield-demo](https://huggingface.co/spaces/lead-ai-labs/lead-ai-fraud-shield-demo)
+* 📊 **Kaggle Profile:** [kaggle.com/arungharami](https://www.kaggle.com/arungharami)
+* 📊 **Kaggle Dataset 1 (Table Data):** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-table-data)
+* 📊 **Kaggle Dataset 2 (Sample Data):** [kaggle.com/datasets/arungharami/lead-ai-fraud-detection-sample-data](https://www.kaggle.com/datasets/arungharami/lead-ai-fraud-detection-sample-data)
+* 📓 **Kaggle Demo Notebook:** [kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo](https://www.kaggle.com/code/arungharami/lead-ai-fraud-shield-explainable-fraud-detection-demo)
