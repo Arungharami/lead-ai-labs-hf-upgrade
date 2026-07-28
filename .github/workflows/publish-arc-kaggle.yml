@@ -1,0 +1,93 @@
+name: Publish ARC to Kaggle
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "competitions/arc-prize-2026/publish/kaggle/**"
+      - ".github/workflows/publish-arc-kaggle.yml"
+  workflow_dispatch:
+    inputs:
+      publish_competition_kernel:
+        description: Build and push the private ARC competition kernel
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-arc-kaggle
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: kaggle-production
+    timeout-minutes: 35
+    env:
+      KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+      ROOT: competitions/arc-prize-2026
+      DATASET_SLUG: arungharami/lead-ai-arc-agent-trace-schema
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Kaggle CLI
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "kaggle>=2.2"
+
+      - name: Verify credential exists
+        run: test -n "$KAGGLE_API_TOKEN"
+
+      - name: Publish or version public trace-schema dataset
+        run: |
+          set -euo pipefail
+          PACKAGE="$ROOT/publish/kaggle/dataset"
+          python -m json.tool "$PACKAGE/dataset-metadata.json" >/dev/null
+
+          if kaggle datasets status "$DATASET_SLUG" >/dev/null 2>&1; then
+            kaggle datasets version \
+              -p "$PACKAGE" \
+              -m "Update ARC trace schema from ${GITHUB_SHA}"
+          else
+            kaggle datasets create -p "$PACKAGE"
+          fi
+
+      - name: Build and validate private competition kernel
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_competition_kernel }}
+        working-directory: competitions/arc-prize-2026
+        run: |
+          set -euo pipefail
+          make setup
+          make ci
+          make notebook
+
+      - name: Install private Kaggle token in ignored runtime
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_competition_kernel }}
+        working-directory: competitions/arc-prize-2026
+        run: |
+          set -euo pipefail
+          mkdir -p .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle
+          printf '%s' "$KAGGLE_API_TOKEN" > \
+            .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
+          chmod 600 .runtime/ARC-AGI-3-Kaggle-Starter/.kaggle/access_token
+
+      - name: Push private competition kernel
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_competition_kernel }}
+        working-directory: competitions/arc-prize-2026
+        run: make submit
+
+      - name: Important competition note
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_competition_kernel }}
+        run: |
+          echo "The private kernel version was pushed to Kaggle."
+          echo "Kaggle still requires a deliberate Submit to Competition action using submission.parquet."

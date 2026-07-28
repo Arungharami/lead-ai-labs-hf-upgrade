@@ -1,0 +1,11 @@
+trace_id,game_id,episode_id,step,state_hash,available_actions,chosen_action,x,y,levels_completed,changed_cells,reward,policy,outcome,source,is_synthetic,notes
+trace-0001,demo-grid-a,episode-01,0,0f7b1e3a9c10,ACTION1|ACTION2|ACTION3|ACTION4,ACTION4,,,0,3,1.3863,lead-ai-symbolic-v2,changed,lead-ai-schema-demo,true,Goal centroid was east of the estimated player
+trace-0002,demo-grid-a,episode-01,1,4e9b0d183b7a,ACTION1|ACTION2|ACTION3|ACTION4,ACTION4,,,0,0,-1.5000,lead-ai-symbolic-v2,no_change,lead-ai-schema-demo,true,State-specific failure memory records an ineffective move
+trace-0003,demo-grid-a,episode-01,2,4e9b0d183b7a,ACTION1|ACTION2|ACTION3|ACTION4,ACTION2,,,0,4,1.6094,lead-ai-symbolic-v2,changed,lead-ai-schema-demo,true,Alternative legal action changed the observation
+trace-0004,demo-grid-a,episode-01,3,819d2a07ef65,ACTION1|ACTION2|ACTION3|ACTION4,ACTION2,,,1,7,41.0794,lead-ai-symbolic-v2,level_gain,lead-ai-schema-demo,true,Synthetic level completion demonstrates trace fields
+trace-0005,demo-click-b,episode-02,0,26c73a1d8b22,ACTION1|ACTION6,ACTION6,24,18,0,5,1.7918,lead-ai-symbolic-v2,changed,lead-ai-schema-demo,true,Rare compact component selected as click target
+trace-0006,demo-click-b,episode-02,1,a231cd805779,ACTION1|ACTION6,ACTION6,40,12,0,0,-1.5000,lead-ai-symbolic-v2,no_change,lead-ai-schema-demo,true,Dead-click signature prevents immediate repetition
+trace-0007,demo-reset-c,episode-03,0,empty,RESET,RESET,,,0,0,0.0000,lead-ai-symbolic-v2,reset,lead-ai-schema-demo,true,Initial synthetic episode reset
+trace-0008,demo-reset-c,episode-03,1,32a8c9b44f13,ACTION1|ACTION2|ACTION7,ACTION7,,,0,2,1.0986,lead-ai-symbolic-v2,changed,lead-ai-schema-demo,true,Novel legal action selected by exploration policy
+trace-0009,demo-grid-d,episode-04,0,75308ed67ff1,ACTION1|ACTION2|ACTION3|ACTION4,ACTION1,,,0,0,-1.5000,lead-ai-symbolic-v2,no_change,lead-ai-schema-demo,true,Blocked path triggers another planned direction
+trace-0010,demo-grid-d,episode-04,1,75308ed67ff1,ACTION1|ACTION2|ACTION3|ACTION4,ACTION3,,,0,6,1.9459,lead-ai-symbolic-v2,changed,lead-ai-schema-demo,true,Shortest-path fallback moves around a synthetic obstacle

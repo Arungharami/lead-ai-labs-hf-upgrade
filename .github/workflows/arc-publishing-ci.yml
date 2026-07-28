@@ -1,0 +1,108 @@
+name: ARC Multi-Platform Publication Checks
+
+on:
+  push:
+    paths:
+      - "competitions/arc-prize-2026/publish/**"
+      - "competitions/arc-prize-2026/PUBLISHING.md"
+      - "competitions/arc-prize-2026/docs/COLLABORATION.md"
+      - "competitions/arc-prize-2026/docs/RESOURCE_CATALOG.md"
+      - ".github/workflows/publish-arc-huggingface.yml"
+      - ".github/workflows/publish-arc-kaggle.yml"
+      - ".github/workflows/arc-publishing-ci.yml"
+  pull_request:
+    paths:
+      - "competitions/arc-prize-2026/publish/**"
+      - "competitions/arc-prize-2026/PUBLISHING.md"
+      - "competitions/arc-prize-2026/docs/COLLABORATION.md"
+      - "competitions/arc-prize-2026/docs/RESOURCE_CATALOG.md"
+      - ".github/workflows/publish-arc-huggingface.yml"
+      - ".github/workflows/publish-arc-kaggle.yml"
+      - ".github/workflows/arc-publishing-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-publication-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: competitions/arc-prize-2026
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validators
+        run: python -m pip install --upgrade ruff pyyaml
+
+      - name: Validate publication metadata and synthetic data
+        run: |
+          python - <<'PY'
+          import csv
+          import json
+          from pathlib import Path
+
+          root = Path("publish")
+          kaggle = root / "kaggle" / "dataset"
+          hf = root / "huggingface" / "dataset"
+
+          metadata = json.loads((kaggle / "dataset-metadata.json").read_text())
+          assert metadata["id"] == "arungharami/lead-ai-arc-agent-trace-schema"
+          assert metadata["licenses"] == [{"name": "CC-BY-4.0"}]
+
+          def read_rows(path: Path):
+              with path.open(newline="") as handle:
+                  return list(csv.DictReader(handle))
+
+          kaggle_rows = read_rows(kaggle / "train.csv")
+          hf_rows = read_rows(hf / "train.csv")
+          assert kaggle_rows == hf_rows
+          assert len(kaggle_rows) >= 10
+          assert len({row["trace_id"] for row in kaggle_rows}) == len(kaggle_rows)
+          assert all(row["is_synthetic"].lower() == "true" for row in kaggle_rows)
+          assert all(row["game_id"].startswith("demo-") for row in kaggle_rows)
+          assert all(row["source"] == "lead-ai-schema-demo" for row in kaggle_rows)
+          print(f"Validated {len(kaggle_rows)} synthetic trace rows.")
+          PY
+
+      - name: Compile Space app
+        run: python -m py_compile publish/huggingface/space/app.py
+
+      - name: Lint Space app
+        run: python -m ruff check publish/huggingface/space/app.py
+
+      - name: Validate workflow YAML
+        working-directory: .
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          for path in [
+              Path(".github/workflows/publish-arc-huggingface.yml"),
+              Path(".github/workflows/publish-arc-kaggle.yml"),
+              Path(".github/workflows/arc-publishing-ci.yml"),
+          ]:
+              parsed = yaml.safe_load(path.read_text())
+              assert isinstance(parsed, dict)
+              assert "jobs" in parsed
+              print(f"Validated {path}")
+          PY
+
+      - name: Scan publication files for credential patterns
+        run: |
+          if grep -RInE \
+            '(KGAT_[A-Za-z0-9_-]{20,}|hf_[A-Za-z0-9]{20,}|KAGGLE_KEY=|HF_TOKEN=hf_)' \
+            publish PUBLISHING.md docs/COLLABORATION.md; then
+            echo "Potential credential detected."
+            exit 1
+          fi

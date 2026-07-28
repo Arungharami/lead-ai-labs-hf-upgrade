@@ -1,0 +1,94 @@
+name: Publish ARC to Hugging Face
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "competitions/arc-prize-2026/agent/my_agent.py"
+      - "competitions/arc-prize-2026/config/runtime-lock.env"
+      - "competitions/arc-prize-2026/docs/PRODUCTION_READINESS.md"
+      - "competitions/arc-prize-2026/publish/huggingface/**"
+      - ".github/workflows/publish-arc-huggingface.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-arc-huggingface
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: huggingface-production
+    timeout-minutes: 15
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      ROOT: competitions/arc-prize-2026
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install current Hugging Face CLI
+        run: python -m pip install --upgrade huggingface_hub
+
+      - name: Verify authentication
+        run: |
+          test -n "$HF_TOKEN"
+          hf auth whoami
+
+      - name: Assemble immutable publication directories
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/arc-hf-publish
+          mkdir -p /tmp/arc-hf-publish/model /tmp/arc-hf-publish/dataset /tmp/arc-hf-publish/space
+
+          cp "$ROOT/publish/huggingface/model/README.md" /tmp/arc-hf-publish/model/README.md
+          cp "$ROOT/agent/my_agent.py" /tmp/arc-hf-publish/model/my_agent.py
+          cp "$ROOT/config/runtime-lock.env" /tmp/arc-hf-publish/model/runtime-lock.env
+          cp "$ROOT/docs/PRODUCTION_READINESS.md" /tmp/arc-hf-publish/model/PRODUCTION_READINESS.md
+
+          cp "$ROOT/publish/huggingface/dataset/README.md" /tmp/arc-hf-publish/dataset/README.md
+          cp "$ROOT/publish/huggingface/dataset/train.csv" /tmp/arc-hf-publish/dataset/train.csv
+
+          cp "$ROOT/publish/huggingface/space/README.md" /tmp/arc-hf-publish/space/README.md
+          cp "$ROOT/publish/huggingface/space/app.py" /tmp/arc-hf-publish/space/app.py
+          cp "$ROOT/publish/huggingface/space/requirements.txt" /tmp/arc-hf-publish/space/requirements.txt
+
+          printf '%s\n' "github_commit=${GITHUB_SHA}" > /tmp/arc-hf-publish/model/revision.txt
+          printf '%s\n' "github_commit=${GITHUB_SHA}" > /tmp/arc-hf-publish/dataset/revision.txt
+          printf '%s\n' "github_commit=${GITHUB_SHA}" > /tmp/arc-hf-publish/space/revision.txt
+
+      - name: Create repositories if missing
+        run: |
+          hf repos create lead-ai-labs/arc-agi-3-symbolic-agent --type model --exist-ok
+          hf repos create lead-ai-labs/arc-agi-3-agent-trace-schema --type dataset --exist-ok
+          hf repos create lead-ai-labs/arc-grid-inspector --type space --space-sdk gradio --exist-ok
+
+      - name: Publish symbolic agent
+        run: >-
+          hf upload lead-ai-labs/arc-agi-3-symbolic-agent
+          /tmp/arc-hf-publish/model .
+          --type model
+          --commit-message "Publish ARC symbolic agent from ${GITHUB_SHA}"
+
+      - name: Publish trace schema dataset
+        run: >-
+          hf upload lead-ai-labs/arc-agi-3-agent-trace-schema
+          /tmp/arc-hf-publish/dataset .
+          --type dataset
+          --commit-message "Publish ARC trace schema from ${GITHUB_SHA}"
+
+      - name: Publish grid inspector Space
+        run: >-
+          hf upload lead-ai-labs/arc-grid-inspector
+          /tmp/arc-hf-publish/space .
+          --type space
+          --commit-message "Publish ARC grid inspector from ${GITHUB_SHA}"
