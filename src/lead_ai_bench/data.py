@@ -114,9 +114,10 @@ def prepare_frame(
     if frame.empty:
         raise ValueError("Dataset is empty")
 
-    clean = frame.copy().drop_duplicates().reset_index(drop=True)
+    clean = frame.copy().reset_index(drop=True)
     target = infer_target_column(clean, target_column)
-    clean[target] = pd.to_numeric(clean[target], errors="raise").astype(int)
+    # Validate before integer conversion: 0.7/1.9 must not silently become 0/1.
+    clean[target] = pd.to_numeric(clean[target], errors="raise")
     unique = set(clean[target].dropna().unique().tolist())
     if not unique.issubset({0, 1}) or len(unique) != 2:
         raise ValueError(f"Target must contain both binary classes 0 and 1; found {sorted(unique)}")
@@ -132,6 +133,18 @@ def prepare_frame(
         missing = X.columns[X.isna().any()].tolist()
         raise ValueError(f"Missing or non-finite feature values in: {missing}")
 
+    # IDs are not model inputs. Deduplicate on the actual feature contract,
+    # otherwise identical examples with different IDs can cross split boundaries.
+    labeled = X.copy()
+    target_key = "__target__"
+    while target_key in feature_names:
+        target_key += "_"
+    labeled[target_key] = clean[target].to_numpy()
+    if labeled.groupby(feature_names, dropna=False)[target_key].nunique().gt(1).any():
+        raise ValueError("Identical feature rows have conflicting target labels")
+    keep = ~X.duplicated()
+    X = X.loc[keep].reset_index(drop=True)
+    clean = clean.loc[keep].reset_index(drop=True)
     y = clean[target].astype(int)
     minority = int(y.value_counts().min())
     if minority < 10:

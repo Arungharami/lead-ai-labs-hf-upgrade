@@ -166,3 +166,7 @@ Real deployment requires representative labeled data, local threshold selection,
 - Website: https://www.lead-ai.us
 - Hugging Face: https://huggingface.co/lead-ai-labs
 - Kaggle: https://www.kaggle.com/arungharami
+
+## Engineering review
+
+See [the October 4 correctness review](docs/ENGINEERING_REVIEW_2026-10-04.md) for repairs, exact verification results, and the next implementation work.
