@@ -1,5 +1,11 @@
 # Lead.AI Labs — Fraud Benchmark, Hugging Face and Kaggle Control Center
 
+## Start here
+
+Read the [benchmark guide](BENCHMARKS.md), inspect the controlled synthetic baseline below, and follow the local quickstart. Synthetic benchmark results do not establish real-world fraud performance.
+
+**Help improve this project:** [Contribution guide](CONTRIBUTING.md) · [Issues](https://github.com/Arungharami/lead-ai-labs-hf-upgrade/issues)
+
 [![Website](https://img.shields.io/badge/Website-lead--ai.us-00D2FF?style=for-the-badge&logo=google-chrome&logoColor=white)](https://www.lead-ai.us)
 [![Hugging Face](https://img.shields.io/badge/Hugging%20Face-lead--ai--labs-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/lead-ai-labs)
 [![Kaggle Benchmark](https://img.shields.io/badge/Kaggle-Live%20Benchmark-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/benchmarks/arungharami/lead-ai-fraud-risk-reasoning-benchmark/leaderboard)
